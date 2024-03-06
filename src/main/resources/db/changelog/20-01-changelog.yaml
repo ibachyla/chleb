@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1708442590716-1
+      author: Ivan_Bachyla (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_recipes
+                  name: id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: text
+              - column:
+                  constraints:
+                    nullable: false
+                  name: slug
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: created_at
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: updated_at
+                  type: BIGINT
+            tableName: recipes
+  - changeSet:
+      id: 1708442590716-2
+      author: Ivan_Bachyla (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: slug
+            constraintName: uc_recipes_slug
+            tableName: recipes
+

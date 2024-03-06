@@ -1,7 +1,13 @@
+import net.ltgt.gradle.errorprone.errorprone
+
 plugins {
     java
+    checkstyle
+    pmd
     id("org.springframework.boot") version "3.2.2"
     id("io.spring.dependency-management") version "1.1.4"
+    id("net.ltgt.errorprone") version "3.1.0"
+    id("com.github.spotbugs") version "6.0.8"
 }
 
 group = "com.github.ibachyla"
@@ -28,19 +34,49 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.liquibase:liquibase-core")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
+
     compileOnly("org.projectlombok:lombok")
+
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
+
     runtimeOnly("org.postgresql:postgresql")
+
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     annotationProcessor("org.projectlombok:lombok")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
+    testImplementation("io.rest-assured:spring-mock-mvc")
+
+    errorprone("com.google.errorprone:error_prone_core:2.25.0")
+    errorprone("tech.picnic.error-prone-support:error-prone-contrib:0.15.0")
+    errorprone("tech.picnic.error-prone-support:refaster-runner:0.15.0")
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.withType<JavaCompile> {
+    options.errorprone.errorproneArgs = listOf(
+            "-Xep:LexicographicalAnnotationAttributeListing:OFF",
+            "-Xep:LexicographicalAnnotationListing:OFF"
+    )
+}
+
+checkstyle {
+    toolVersion = "10.14.0"
+}
+
+pmd {
+    toolVersion = "6.55.0"
+}
+
+spotbugs {
+    toolVersion = "4.8.3"
 }
