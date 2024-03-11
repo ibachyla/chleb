@@ -40,5 +40,10 @@ jobs:
       - name: Run SpotBugs
         run: ./gradlew spotbugsMain spotbugsTest
 
+      - name: Run Qodana
+        uses: JetBrains/qodana-action@v2023.3
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+
       - name: Run tests
         run: ./gradlew test

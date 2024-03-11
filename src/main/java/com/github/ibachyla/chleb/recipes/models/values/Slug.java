@@ -19,6 +19,7 @@ public record Slug(String value) {
 
   private static final int MAX_LENGTH = 255;
   private static final Pattern NONLATIN = Pattern.compile("[^\\w_-]");
+  @SuppressWarnings("RegExpSimplifiable")
   private static final Pattern SEPARATORS = Pattern.compile("[\\s\\p{Punct}&&[^-]]");
 
   public Slug {
