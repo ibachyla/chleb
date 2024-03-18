@@ -55,7 +55,7 @@ dependencies {
 
     errorprone("com.google.errorprone:error_prone_core:2.25.0")
     errorprone("tech.picnic.error-prone-support:error-prone-contrib:0.15.0")
-    errorprone("tech.picnic.error-prone-support:refaster-runner:0.15.0")
+    errorprone("tech.picnic.error-prone-support:refaster-runner:0.16.1")
 }
 
 tasks.withType<Test> {
