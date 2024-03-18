@@ -53,7 +53,7 @@ dependencies {
     testImplementation("org.testcontainers:postgresql")
     testImplementation("io.rest-assured:spring-mock-mvc")
 
-    errorprone("com.google.errorprone:error_prone_core:2.25.0")
+    errorprone("com.google.errorprone:error_prone_core:2.26.1")
     errorprone("tech.picnic.error-prone-support:error-prone-contrib:0.15.0")
     errorprone("tech.picnic.error-prone-support:refaster-runner:0.15.0")
 }
