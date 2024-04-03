@@ -4,7 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.github.ibachyla.chleb.recipes.TestEntitiesFactory;
+import com.github.ibachyla.chleb.models.validators.ValidationException;
+import com.github.ibachyla.chleb.recipes.TestValues;
 import com.github.ibachyla.chleb.recipes.models.entities.Recipe;
 import com.github.ibachyla.chleb.recipes.models.values.RecipeName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ final class RecipeValidatorTest {
   void validate_noErrors() {
     // Arrange
     RecipeValidator validator = new RecipeValidator();
-    Recipe recipe = TestEntitiesFactory.recipe();
+    Recipe recipe = TestValues.recipe();
 
     // Act & Assert
     assertThatCode(() -> validator.validate(recipe)).doesNotThrowAnyException();
@@ -25,7 +26,7 @@ final class RecipeValidatorTest {
   void validate_nameDoesNotMatchSlug() {
     // Arrange
     RecipeValidator validator = new RecipeValidator();
-    Recipe recipe = TestEntitiesFactory.recipe();
+    Recipe recipe = TestValues.recipe();
     recipe.name(new RecipeName("Potato Bread 2"));
 
     // Act & Assert
@@ -37,7 +38,7 @@ final class RecipeValidatorTest {
   void validate_createdAtIsAfterUpdatedAt() {
     // Arrange
     RecipeValidator validator = new RecipeValidator();
-    Recipe recipe = TestEntitiesFactory.recipe();
+    Recipe recipe = TestValues.recipe();
     recipe.createdAt(recipe.updatedAt().plusSeconds(1));
 
     // Act & Assert
@@ -49,7 +50,7 @@ final class RecipeValidatorTest {
   void validate_createdAtIsBeforeUpdatedAt() {
     // Arrange
     RecipeValidator validator = new RecipeValidator();
-    Recipe recipe = TestEntitiesFactory.recipe();
+    Recipe recipe = TestValues.recipe();
     recipe.createdAt(recipe.updatedAt().minusSeconds(1));
 
     // Act & Assert

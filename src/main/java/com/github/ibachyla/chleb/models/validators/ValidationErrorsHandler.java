@@ -1,4 +1,4 @@
-package com.github.ibachyla.chleb.recipes.models.validators;
+package com.github.ibachyla.chleb.models.validators;
 
 /**
  * Validation errors handler.

@@ -2,3 +2,11 @@ spring:
   datasource:
     url: jdbc:tc:postgresql:16.2-alpine:///test
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        test:
+#          context:
+#            cache: DEBUG

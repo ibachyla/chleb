@@ -1,7 +1,7 @@
 package com.github.ibachyla.chleb.recipes.data.mappers;
 
+import com.github.ibachyla.chleb.mappers.AbstractMapper;
 import com.github.ibachyla.chleb.recipes.data.entities.RecipeEntity;
-import com.github.ibachyla.chleb.recipes.mappers.AbstractMapper;
 import com.github.ibachyla.chleb.recipes.models.entities.Recipe;
 import org.springframework.stereotype.Component;
 

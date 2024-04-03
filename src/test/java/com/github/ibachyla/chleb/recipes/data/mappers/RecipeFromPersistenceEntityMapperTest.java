@@ -3,9 +3,9 @@ package com.github.ibachyla.chleb.recipes.data.mappers;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.github.ibachyla.chleb.recipes.TestEntitiesFactory;
+import com.github.ibachyla.chleb.mappers.Mapper;
+import com.github.ibachyla.chleb.recipes.TestValues;
 import com.github.ibachyla.chleb.recipes.data.entities.RecipeEntity;
-import com.github.ibachyla.chleb.recipes.mappers.Mapper;
 import com.github.ibachyla.chleb.recipes.models.entities.Recipe;
 import java.time.Instant;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ final class RecipeFromPersistenceEntityMapperTest {
   void map_recipeEntityToRecipe() {
     // Arrange
     Mapper<RecipeEntity, Recipe> mapper = new RecipeFromPersistenceEntityMapper();
-    RecipeEntity recipeEntity = TestEntitiesFactory.recipeEntity();
+    RecipeEntity recipeEntity = TestValues.recipeEntity();
 
     // Act
     Recipe recipe = mapper.map(recipeEntity);

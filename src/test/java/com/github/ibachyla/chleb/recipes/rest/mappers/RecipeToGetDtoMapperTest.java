@@ -3,8 +3,8 @@ package com.github.ibachyla.chleb.recipes.rest.mappers;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.github.ibachyla.chleb.recipes.TestEntitiesFactory;
-import com.github.ibachyla.chleb.recipes.mappers.Mapper;
+import com.github.ibachyla.chleb.mappers.Mapper;
+import com.github.ibachyla.chleb.recipes.TestValues;
 import com.github.ibachyla.chleb.recipes.models.entities.Recipe;
 import com.github.ibachyla.chleb.recipes.rest.dto.GetRecipeResponse;
 import java.time.ZoneId;
@@ -27,7 +27,7 @@ final class RecipeToGetDtoMapperTest {
   void map_recipeToGetRecipeResponse() {
     // Arrange
     Mapper<Recipe, GetRecipeResponse> mapper = new RecipeToGetDtoMapper();
-    Recipe recipe = TestEntitiesFactory.recipe();
+    Recipe recipe = TestValues.recipe();
 
     final DateTimeFormatter dateFormatter =
         DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneId.systemDefault());

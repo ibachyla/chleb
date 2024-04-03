@@ -1,8 +1,8 @@
 package com.github.ibachyla.chleb.recipes.models.entities;
 
-import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.Validate.notNull;
 
+import com.github.ibachyla.chleb.models.entities.Entity;
 import com.github.ibachyla.chleb.recipes.models.values.RecipeName;
 import com.github.ibachyla.chleb.recipes.models.values.Slug;
 import java.time.Instant;
@@ -15,10 +15,9 @@ import lombok.Getter;
  * Recipe entity.
  */
 @Getter
-@EqualsAndHashCode
-public class Recipe {
+@EqualsAndHashCode(callSuper = true)
+public class Recipe extends Entity {
 
-  private UUID id;
   private RecipeName name;
   private Slug slug;
   private Instant createdAt;
@@ -32,11 +31,10 @@ public class Recipe {
    * @param createdAt Creation date.
    */
   public Recipe(RecipeName name, Slug slug, Instant createdAt) {
-    this(randomUUID(),
-        name,
-        slug,
-        createdAt,
-        createdAt);
+    name(name);
+    slug(slug);
+    createdAt(createdAt);
+    updatedAt(createdAt);
   }
 
   /**
@@ -53,17 +51,11 @@ public class Recipe {
                 Slug slug,
                 Instant createdAt,
                 Instant updatedAt) {
-    id(id);
+    super(id);
     name(name);
     slug(slug);
     createdAt(createdAt);
     updatedAt(updatedAt);
-  }
-
-  private void id(UUID id) {
-    notNull(id, "id cannot be null");
-
-    this.id = id;
   }
 
   /**
@@ -113,7 +105,7 @@ public class Recipe {
   @Override
   public String toString() {
     return new StringJoiner(", ", Recipe.class.getSimpleName() + "[", "]")
-        .add("id=" + id)
+        .add("id=" + id())
         .add("name=" + name)
         .add("slug=" + slug)
         .add("createdAt=" + createdAt)

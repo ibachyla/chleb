@@ -11,7 +11,7 @@ import java.time.Instant;
 /**
  * Test entities factory.
  */
-public final class TestEntitiesFactory {
+public final class TestValues {
 
   public static RecipeName recipeName() {
     return new RecipeName("Potato Bread");

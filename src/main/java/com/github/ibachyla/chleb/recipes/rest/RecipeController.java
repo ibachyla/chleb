@@ -2,7 +2,7 @@ package com.github.ibachyla.chleb.recipes.rest;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-import com.github.ibachyla.chleb.recipes.mappers.Mapper;
+import com.github.ibachyla.chleb.mappers.Mapper;
 import com.github.ibachyla.chleb.recipes.models.entities.Recipe;
 import com.github.ibachyla.chleb.recipes.rest.dto.CreateRecipeRequest;
 import com.github.ibachyla.chleb.recipes.rest.dto.ErrorResponse;

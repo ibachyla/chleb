@@ -1,4 +1,7 @@
 databaseChangeLog:
     - include:
-        file: 20-01-changelog.yaml
-        relativeToChangelogFile: true
+          file: 01-add-recipes-changelog.yaml
+          relativeToChangelogFile: true
+    - include:
+          file: 02-add-users-changelog.yaml
+          relativeToChangelogFile: true

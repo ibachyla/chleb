@@ -4,7 +4,7 @@ import static java.util.UUID.randomUUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.github.ibachyla.chleb.recipes.TestEntitiesFactory;
+import com.github.ibachyla.chleb.recipes.TestValues;
 import com.github.ibachyla.chleb.recipes.models.values.RecipeName;
 import com.github.ibachyla.chleb.recipes.models.values.Slug;
 import java.time.Instant;
@@ -88,7 +88,7 @@ final class RecipeTest {
   @Test
   void setName_positive() {
     // Arrange
-    Recipe recipe = TestEntitiesFactory.recipe();
+    Recipe recipe = TestValues.recipe();
     RecipeName newName = new RecipeName("Banana Bread");
 
     // Act
@@ -101,7 +101,7 @@ final class RecipeTest {
   @Test
   void setName_negative_nullName() {
     // Arrange
-    Recipe recipe = TestEntitiesFactory.recipe();
+    Recipe recipe = TestValues.recipe();
 
     // Act & Assert
     Exception ex = assertThrows(NullPointerException.class, () -> recipe.name(null));
@@ -111,7 +111,7 @@ final class RecipeTest {
   @Test
   void setSlug_positive() {
     // Arrange
-    Recipe recipe = TestEntitiesFactory.recipe();
+    Recipe recipe = TestValues.recipe();
     Slug newSlug = Slug.from("Banana Bread");
 
     // Act
@@ -124,7 +124,7 @@ final class RecipeTest {
   @Test
   void setSlug_negative_nullSlug() {
     // Arrange
-    Recipe recipe = TestEntitiesFactory.recipe();
+    Recipe recipe = TestValues.recipe();
 
     // Act & Assert
     Exception ex = assertThrows(NullPointerException.class, () -> recipe.slug(null));
@@ -134,7 +134,7 @@ final class RecipeTest {
   @Test
   void setCreatedAt_positive() {
     // Arrange
-    Recipe recipe = TestEntitiesFactory.recipe();
+    Recipe recipe = TestValues.recipe();
     Instant newCreatedAt = Instant.EPOCH;
 
     // Act
@@ -147,7 +147,7 @@ final class RecipeTest {
   @Test
   void setCreatedAt_negative_nullCreatedAt() {
     // Arrange
-    Recipe recipe = TestEntitiesFactory.recipe();
+    Recipe recipe = TestValues.recipe();
 
     // Act & Assert
     Exception ex = assertThrows(NullPointerException.class, () -> recipe.createdAt(null));
@@ -157,7 +157,7 @@ final class RecipeTest {
   @Test
   void setUpdatedAt_positive() {
     // Arrange
-    Recipe recipe = TestEntitiesFactory.recipe();
+    Recipe recipe = TestValues.recipe();
     Instant newUpdatedAt = Instant.EPOCH;
 
     // Act
@@ -170,7 +170,7 @@ final class RecipeTest {
   @Test
   void setUpdatedAt_negative_nullUpdatedAt() {
     // Arrange
-    Recipe recipe = TestEntitiesFactory.recipe();
+    Recipe recipe = TestValues.recipe();
 
     // Act & Assert
     Exception ex = assertThrows(NullPointerException.class, () -> recipe.updatedAt(null));

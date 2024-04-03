@@ -35,8 +35,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.liquibase:liquibase-core")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
+    implementation("commons-validator:commons-validator:1.8.0")
 
     compileOnly("org.projectlombok:lombok")
+    compileOnly("com.google.code.findbugs:annotations:3.0.1")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
@@ -52,6 +54,7 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
     testImplementation("io.rest-assured:spring-mock-mvc")
+    testImplementation("net.datafaker:datafaker:2.1.0")
 
     errorprone("com.google.errorprone:error_prone_core:2.25.0")
     errorprone("tech.picnic.error-prone-support:error-prone-contrib:0.15.0")
