@@ -1,4 +1,4 @@
-package com.github.ibachyla.chleb.recipes.mappers;
+package com.github.ibachyla.chleb.mappers;
 
 import static org.apache.commons.lang3.Validate.notNull;
 

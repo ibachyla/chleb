@@ -1,10 +1,13 @@
 package com.github.ibachyla.chleb.security;
 
+import com.github.ibachyla.chleb.security.services.PasswordEncoder;
+import java.nio.CharBuffer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -30,5 +33,10 @@ public class SecurityConfig {
         .csrf(AbstractHttpConfigurer::disable)
         .logout(AbstractHttpConfigurer::disable)
         .build();
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return rawPassword -> new BCryptPasswordEncoder().encode(CharBuffer.wrap(rawPassword));
   }
 }

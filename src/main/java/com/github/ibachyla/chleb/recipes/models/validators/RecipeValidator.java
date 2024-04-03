@@ -1,5 +1,7 @@
 package com.github.ibachyla.chleb.recipes.models.validators;
 
+import com.github.ibachyla.chleb.models.validators.AbstractEntityValidator;
+import com.github.ibachyla.chleb.models.validators.ValidationErrorsHandler;
 import com.github.ibachyla.chleb.recipes.models.entities.Recipe;
 import com.github.ibachyla.chleb.recipes.models.values.Slug;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.github.ibachyla.chleb.recipes.mappers;
+package com.github.ibachyla.chleb.mappers;
 
 /**
  * Mapper from one type to another.

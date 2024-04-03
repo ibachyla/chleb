@@ -3,11 +3,11 @@ package com.github.ibachyla.chleb.recipes.services;
 import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
 
+import com.github.ibachyla.chleb.mappers.Mapper;
+import com.github.ibachyla.chleb.models.validators.EntityValidator;
 import com.github.ibachyla.chleb.recipes.data.entities.RecipeEntity;
 import com.github.ibachyla.chleb.recipes.data.repositories.RecipeRepository;
-import com.github.ibachyla.chleb.recipes.mappers.Mapper;
 import com.github.ibachyla.chleb.recipes.models.entities.Recipe;
-import com.github.ibachyla.chleb.recipes.models.validators.EntityValidator;
 import com.github.ibachyla.chleb.recipes.services.exceptions.RecipeNotFoundException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;

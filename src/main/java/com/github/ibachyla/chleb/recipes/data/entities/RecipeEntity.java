@@ -1,10 +1,9 @@
 package com.github.ibachyla.chleb.recipes.data.entities;
 
+import com.github.ibachyla.chleb.data.entities.IdentifiedEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,9 +14,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "recipes")
-public class RecipeEntity {
-  @Id
-  private UUID id;
+public class RecipeEntity extends IdentifiedEntity {
 
   @Column(nullable = false, columnDefinition = "text")
   private String name;

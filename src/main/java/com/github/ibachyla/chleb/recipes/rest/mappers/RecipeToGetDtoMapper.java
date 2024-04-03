@@ -1,6 +1,6 @@
 package com.github.ibachyla.chleb.recipes.rest.mappers;
 
-import com.github.ibachyla.chleb.recipes.mappers.AbstractMapper;
+import com.github.ibachyla.chleb.mappers.AbstractMapper;
 import com.github.ibachyla.chleb.recipes.models.entities.Recipe;
 import com.github.ibachyla.chleb.recipes.rest.dto.GetRecipeResponse;
 import java.time.ZoneId;

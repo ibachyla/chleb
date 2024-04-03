@@ -8,14 +8,14 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
-import com.github.ibachyla.chleb.recipes.TestEntitiesFactory;
+import com.github.ibachyla.chleb.models.validators.EntityValidator;
+import com.github.ibachyla.chleb.models.validators.ValidationException;
+import com.github.ibachyla.chleb.recipes.TestValues;
 import com.github.ibachyla.chleb.recipes.data.entities.RecipeEntity;
 import com.github.ibachyla.chleb.recipes.data.mappers.RecipeFromPersistenceEntityMapper;
 import com.github.ibachyla.chleb.recipes.data.mappers.RecipeToPersistenceEntityMapper;
 import com.github.ibachyla.chleb.recipes.data.repositories.RecipeRepository;
 import com.github.ibachyla.chleb.recipes.models.entities.Recipe;
-import com.github.ibachyla.chleb.recipes.models.validators.EntityValidator;
-import com.github.ibachyla.chleb.recipes.models.validators.ValidationException;
 import com.github.ibachyla.chleb.recipes.services.exceptions.RecipeNotFoundException;
 import java.time.Instant;
 import java.util.Optional;
@@ -55,7 +55,7 @@ final class RecipeServiceImplTest {
   @Test
   void createRecipe_invalid() {
     // Arrange
-    Recipe recipe = TestEntitiesFactory.recipe();
+    Recipe recipe = TestValues.recipe();
 
     doThrow(new ValidationException("invalid")).when(recipeValidatorMock).validate(recipe);
 
@@ -67,7 +67,7 @@ final class RecipeServiceImplTest {
   @Test
   void createRecipe() {
     // Arrange
-    Recipe recipe = TestEntitiesFactory.recipe();
+    Recipe recipe = TestValues.recipe();
 
     RecipeEntity recipeEntity = new RecipeEntity();
     recipeEntity.id(recipe.id());
@@ -103,7 +103,7 @@ final class RecipeServiceImplTest {
   @Test
   void getRecipe_bySlug_notFound() {
     // Arrange
-    String slug = TestEntitiesFactory.recipeSlug().value();
+    String slug = TestValues.recipeSlug().value();
     when(recipeRepositoryMock.findBySlugOrId(slug, null)).thenReturn(Optional.empty());
 
     // Act & Assert
@@ -114,7 +114,7 @@ final class RecipeServiceImplTest {
   @Test
   void getRecipe_bySlug() {
     // Arrange
-    RecipeEntity recipeEntity = TestEntitiesFactory.recipeEntity();
+    RecipeEntity recipeEntity = TestValues.recipeEntity();
 
     when(recipeRepositoryMock.findBySlugOrId(recipeEntity.slug(), null)).thenReturn(
         Optional.of(recipeEntity));
@@ -145,7 +145,7 @@ final class RecipeServiceImplTest {
   @Test
   void getRecipe_byId() {
     // Arrange
-    RecipeEntity recipeEntity = TestEntitiesFactory.recipeEntity();
+    RecipeEntity recipeEntity = TestValues.recipeEntity();
 
     when(recipeRepositoryMock.findBySlugOrId(recipeEntity.id().toString(), recipeEntity.id()))
         .thenReturn(Optional.of(recipeEntity));

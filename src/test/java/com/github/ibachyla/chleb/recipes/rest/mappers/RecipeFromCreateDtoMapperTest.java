@@ -4,7 +4,7 @@ import static java.time.ZoneOffset.UTC;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.github.ibachyla.chleb.recipes.mappers.Mapper;
+import com.github.ibachyla.chleb.mappers.Mapper;
 import com.github.ibachyla.chleb.recipes.models.entities.Recipe;
 import com.github.ibachyla.chleb.recipes.models.values.Slug;
 import com.github.ibachyla.chleb.recipes.rest.dto.CreateRecipeRequest;

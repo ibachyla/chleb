@@ -1,4 +1,4 @@
-package com.github.ibachyla.chleb.recipes.rest;
+package com.github.ibachyla.chleb.rest;
 
 import java.util.Map;
 import org.springframework.boot.web.error.ErrorAttributeOptions;

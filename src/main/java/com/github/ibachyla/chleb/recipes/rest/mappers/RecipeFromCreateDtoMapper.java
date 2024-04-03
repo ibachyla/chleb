@@ -1,6 +1,6 @@
 package com.github.ibachyla.chleb.recipes.rest.mappers;
 
-import com.github.ibachyla.chleb.recipes.mappers.AbstractMapper;
+import com.github.ibachyla.chleb.mappers.AbstractMapper;
 import com.github.ibachyla.chleb.recipes.models.entities.Recipe;
 import com.github.ibachyla.chleb.recipes.models.values.RecipeName;
 import com.github.ibachyla.chleb.recipes.models.values.Slug;

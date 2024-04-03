@@ -1,11 +1,13 @@
-package com.github.ibachyla.chleb.recipes.models.validators;
+package com.github.ibachyla.chleb.models.validators;
+
+import com.github.ibachyla.chleb.models.entities.Entity;
 
 /**
  * Abstract entity validator.
  *
  * @param <T> Entity type.
  */
-public abstract class AbstractEntityValidator<T> implements EntityValidator<T> {
+public abstract class AbstractEntityValidator<T extends Entity> implements EntityValidator<T> {
 
   @Override
   public void validate(T entity) {
