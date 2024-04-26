@@ -142,7 +142,7 @@ final class UserRegistrationControllerTest {
 
   @ParameterizedTest
   @ValueSource(strings = {"aa", "abcdefghijklmnopqrstu"})
-  void registerUser_usernameTooShort(String username) {
+  void registerUser_usernameOfInvalidLength(String username) {
     // Arrange
     char[] password = TestValues.password();
     RegisterUserRequestDto body = new RegisterUserRequestDto(
