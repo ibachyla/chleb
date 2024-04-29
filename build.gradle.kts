@@ -56,7 +56,7 @@ dependencies {
     testImplementation("io.rest-assured:spring-mock-mvc")
     testImplementation("net.datafaker:datafaker:2.1.0")
 
-    errorprone("com.google.errorprone:error_prone_core:2.26.1")
+    errorprone("com.google.errorprone:error_prone_core:2.27.0")
     errorprone("tech.picnic.error-prone-support:error-prone-contrib:0.16.1")
     errorprone("tech.picnic.error-prone-support:refaster-runner:0.16.1")
 }
