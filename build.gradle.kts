@@ -39,7 +39,7 @@ dependencies {
     implementation("commons-validator:commons-validator:1.8.0")
 
     compileOnly("org.projectlombok:lombok")
-    compileOnly("com.google.code.findbugs:annotations:3.0.1")
+    compileOnly("com.google.code.findbugs:annotations:3.0.1u2")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
