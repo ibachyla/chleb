@@ -1,4 +1,4 @@
-package com.github.ibachyla.chleb.recipes.rest.dto;
+package com.github.ibachyla.chleb.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

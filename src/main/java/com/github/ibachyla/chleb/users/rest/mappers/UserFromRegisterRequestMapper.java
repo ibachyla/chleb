@@ -6,7 +6,7 @@ import com.github.ibachyla.chleb.users.models.entities.User;
 import com.github.ibachyla.chleb.users.models.values.Email;
 import com.github.ibachyla.chleb.users.models.values.HashedPassword;
 import com.github.ibachyla.chleb.users.models.values.Username;
-import com.github.ibachyla.chleb.users.rest.dto.RegisterUserRequestDto;
+import com.github.ibachyla.chleb.users.rest.dto.RegisterUserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,12 +15,12 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
-public class UserFromRegisterRequestMapper extends AbstractMapper<RegisterUserRequestDto, User> {
+public class UserFromRegisterRequestMapper extends AbstractMapper<RegisterUserRequest, User> {
 
   private final PasswordEncoder passwordEncoder;
 
   @Override
-  protected User doMap(RegisterUserRequestDto source) {
+  protected User doMap(RegisterUserRequest source) {
     HashedPassword password = new HashedPassword(source.password(), passwordEncoder);
     source.cleanPassword();
 

@@ -1,16 +1,18 @@
 package com.github.ibachyla.chleb.users.rest.dto;
 
+import static com.github.ibachyla.chleb.utils.ArrayUtils.fillWithZeroes;
+
 import com.github.ibachyla.chleb.models.validators.constraints.PasswordMatch;
 import com.github.ibachyla.chleb.models.validators.constraints.ValidPassword;
 import com.github.ibachyla.chleb.users.models.values.HashedPassword;
 import com.github.ibachyla.chleb.users.models.values.Username;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import java.util.Arrays;
 
 /**
  * Register user request DTO.
@@ -26,7 +28,7 @@ import java.util.Arrays;
 @PasswordMatch(passwordGetter = "password",
     passwordConfirmGetter = "passwordConfirm",
     message = "password and password confirmation must match")
-public record RegisterUserRequestDto(
+public record RegisterUserRequest(
     @Email
     @NotBlank(message = "email is required")
     String email,
@@ -42,6 +44,7 @@ public record RegisterUserRequestDto(
     @NotBlank(message = "fullName is required")
     String fullName,
 
+    @Schema(type = "string", format = "password")
     @NotEmpty(message = "password is required")
     @Size(min = HashedPassword.MIN_RAW_LENGTH,
         max = HashedPassword.MAX_RAW_LENGTH,
@@ -50,6 +53,7 @@ public record RegisterUserRequestDto(
         + " one lowercase letter and one special character")
     char[] password,
 
+    @Schema(type = "string", format = "password")
     @NotEmpty(message = "password confirmation is required")
     char[] passwordConfirm
 ) {
@@ -67,7 +71,16 @@ public record RegisterUserRequestDto(
   }
 
   public void cleanPassword() {
-    Arrays.fill(password, '0');
-    Arrays.fill(passwordConfirm, '0');
+    fillWithZeroes(password);
+    fillWithZeroes(passwordConfirm);
+  }
+
+  @Override
+  public String toString() {
+    return "RegisterUserRequest{"
+        + "email='" + email + '\''
+        + ", username='" + username + '\''
+        + ", fullName='" + fullName + '\''
+        + '}';
   }
 }

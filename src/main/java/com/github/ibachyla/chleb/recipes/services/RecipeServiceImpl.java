@@ -9,6 +9,7 @@ import com.github.ibachyla.chleb.recipes.data.entities.RecipeEntity;
 import com.github.ibachyla.chleb.recipes.data.repositories.RecipeRepository;
 import com.github.ibachyla.chleb.recipes.models.entities.Recipe;
 import com.github.ibachyla.chleb.recipes.services.exceptions.RecipeNotFoundException;
+import jakarta.transaction.Transactional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,7 @@ public class RecipeServiceImpl implements RecipeService {
   }
 
   @Override
+  @Transactional
   public Recipe getRecipe(String slugOrId) {
     notBlank(slugOrId, "slug or id cannot be blank");
 

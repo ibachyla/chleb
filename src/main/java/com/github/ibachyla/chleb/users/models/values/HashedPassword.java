@@ -5,6 +5,7 @@ import static org.apache.commons.lang3.Validate.notNull;
 
 import com.github.ibachyla.chleb.models.validators.PasswordFormatValidator;
 import com.github.ibachyla.chleb.security.services.PasswordEncoder;
+import com.github.ibachyla.chleb.security.services.PasswordMatcher;
 
 /**
  * Hashed password value object.
@@ -18,6 +19,10 @@ public record HashedPassword(String value) {
 
   public HashedPassword(char[] rawPassword, PasswordEncoder passwordEncoder) {
     this(passwordEncoder.encode(validate(rawPassword)));
+  }
+
+  public boolean matches(char[] rawPassword, PasswordMatcher passwordMatcher) {
+    return passwordMatcher.matches(rawPassword, value);
   }
 
   @Override

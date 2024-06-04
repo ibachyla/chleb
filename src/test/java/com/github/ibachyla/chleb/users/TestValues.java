@@ -49,7 +49,8 @@ public class TestValues {
    */
   public static char[] password() {
     return faker.internet()
-        .password(8, 64, true, true, true)
+        .password(8, 60, true, true, true)
+        .concat("1Aa!")
         .toCharArray();
   }
 }

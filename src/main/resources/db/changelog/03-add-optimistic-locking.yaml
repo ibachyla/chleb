@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1714225759426-1
+      author: ibachyla (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: version
+                  type: BIGINT
+            tableName: recipes
+  - changeSet:
+      id: 1714225759426-2
+      author: ibachyla (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addNotNullConstraint:
+            columnName: version
+            tableName: recipes
+  - changeSet:
+      id: 1714225759426-3
+      author: ibachyla (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: version
+                  type: BIGINT
+            tableName: users
+  - changeSet:
+      id: 1714225759426-4
+      author: ibachyla (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addNotNullConstraint:
+            columnName: version
+            tableName: users
+

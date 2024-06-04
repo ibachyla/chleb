@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.github.ibachyla.chleb.users.models.values.Email;
 import com.github.ibachyla.chleb.users.models.values.HashedPassword;
+import com.github.ibachyla.chleb.users.models.values.Role;
 import com.github.ibachyla.chleb.users.models.values.Username;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ final class UserTest {
   @Test
   void constructor_positive_validUser() {
     // Act
-    User user = new User(ID, EMAIL, USERNAME, FULL_NAME, PASSWORD);
+    User user = new User(ID, EMAIL, USERNAME, FULL_NAME, PASSWORD, Role.USER);
 
     // Assert
     assertThat(user.id()).isEqualTo(ID);

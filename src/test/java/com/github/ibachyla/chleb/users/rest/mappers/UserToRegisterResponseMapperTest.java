@@ -8,12 +8,12 @@ import com.github.ibachyla.chleb.users.models.entities.User;
 import com.github.ibachyla.chleb.users.models.values.Email;
 import com.github.ibachyla.chleb.users.models.values.HashedPassword;
 import com.github.ibachyla.chleb.users.models.values.Username;
-import com.github.ibachyla.chleb.users.rest.dto.RegisterUserResponseDto;
+import com.github.ibachyla.chleb.users.rest.dto.RegisterUserResponse;
 import org.junit.jupiter.api.Test;
 
 final class UserToRegisterResponseMapperTest {
 
-  private final Mapper<User, RegisterUserResponseDto> mapper = new UserToRegisterResponseMapper();
+  private final Mapper<User, RegisterUserResponse> mapper = new UserToRegisterResponseMapper();
 
   @Test
   void map_success() {
@@ -26,7 +26,7 @@ final class UserToRegisterResponseMapperTest {
     );
 
     // Act
-    RegisterUserResponseDto responseDto = mapper.map(user);
+    RegisterUserResponse responseDto = mapper.map(user);
 
     // Assert
     assertThat(responseDto.email()).isEqualTo(user.email().value());

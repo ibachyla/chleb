@@ -33,6 +33,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("org.liquibase:liquibase-core")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
     implementation("commons-validator:commons-validator:1.8.0")
@@ -67,8 +68,8 @@ tasks.withType<Test> {
 
 tasks.withType<JavaCompile> {
     options.errorprone.errorproneArgs = listOf(
-            "-Xep:LexicographicalAnnotationAttributeListing:OFF",
-            "-Xep:LexicographicalAnnotationListing:OFF"
+        "-Xep:LexicographicalAnnotationAttributeListing:OFF",
+        "-Xep:LexicographicalAnnotationListing:OFF"
     )
 }
 
@@ -82,4 +83,10 @@ pmd {
 
 spotbugs {
     toolVersion = "4.8.3"
+}
+
+tasks.spotbugsMain {
+    reports.create("html") {
+        required = true
+    }
 }

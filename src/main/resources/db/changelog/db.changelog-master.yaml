@@ -5,3 +5,9 @@ databaseChangeLog:
     - include:
           file: 02-add-users-changelog.yaml
           relativeToChangelogFile: true
+    - include:
+          file: 03-add-optimistic-locking.yaml
+          relativeToChangelogFile: true
+    - include:
+          file: 04-add-user-role.yaml
+          relativeToChangelogFile: true
