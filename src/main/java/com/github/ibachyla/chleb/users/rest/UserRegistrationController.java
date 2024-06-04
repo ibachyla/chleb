@@ -3,10 +3,10 @@ package com.github.ibachyla.chleb.users.rest;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.github.ibachyla.chleb.mappers.Mapper;
-import com.github.ibachyla.chleb.recipes.rest.dto.ErrorResponse;
+import com.github.ibachyla.chleb.rest.dto.ErrorResponse;
 import com.github.ibachyla.chleb.users.models.entities.User;
-import com.github.ibachyla.chleb.users.rest.dto.RegisterUserRequestDto;
-import com.github.ibachyla.chleb.users.rest.dto.RegisterUserResponseDto;
+import com.github.ibachyla.chleb.users.rest.dto.RegisterUserRequest;
+import com.github.ibachyla.chleb.users.rest.dto.RegisterUserResponse;
 import com.github.ibachyla.chleb.users.services.UserService;
 import com.github.ibachyla.chleb.users.services.exceptions.UserAlreadyExistsException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,8 +36,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserRegistrationController {
 
   private final UserService userService;
-  private final Mapper<RegisterUserRequestDto, User> userFromRegisterRequestMapper;
-  private final Mapper<User, RegisterUserResponseDto> userToRegisterResponseMapper;
+  private final Mapper<RegisterUserRequest, User> userFromRegisterRequestMapper;
+  private final Mapper<User, RegisterUserResponse> userToRegisterResponseMapper;
 
   /**
    * Register a user.
@@ -49,13 +49,13 @@ public class UserRegistrationController {
   @Operation(summary = "Register New User")
   @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
-  public RegisterUserResponseDto registerUser(@Valid @RequestBody RegisterUserRequestDto body) {
+  public RegisterUserResponse registerUser(@Valid @RequestBody RegisterUserRequest body) {
     log.info("Registering user with email `{}` and username `{}`.", body.email(), body.username());
 
     User user = userFromRegisterRequestMapper.map(body);
     body.cleanPassword();
 
-    user = userService.registerUser(user);
+    user = userService.register(user);
     log.info("User with email `{}` and username `{}` registered successfully.",
         user.email(), user.username());
 

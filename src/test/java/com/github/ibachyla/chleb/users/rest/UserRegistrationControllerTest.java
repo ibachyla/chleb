@@ -5,10 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.ibachyla.chleb.ApiActions;
 import com.github.ibachyla.chleb.ChlebTestConfiguration;
-import com.github.ibachyla.chleb.recipes.rest.dto.ErrorResponse;
+import com.github.ibachyla.chleb.rest.dto.ErrorResponse;
 import com.github.ibachyla.chleb.users.TestValues;
-import com.github.ibachyla.chleb.users.rest.dto.RegisterUserRequestDto;
-import com.github.ibachyla.chleb.users.rest.dto.RegisterUserResponseDto;
+import com.github.ibachyla.chleb.users.rest.dto.RegisterUserRequest;
+import com.github.ibachyla.chleb.users.rest.dto.RegisterUserResponse;
 import io.restassured.module.mockmvc.response.MockMvcResponse;
 import org.apache.http.HttpStatus;
 import org.assertj.core.api.SoftAssertions;
@@ -42,7 +42,7 @@ final class UserRegistrationControllerTest {
   void registerUser() {
     // Arrange
     char[] password = TestValues.password();
-    RegisterUserRequestDto body = new RegisterUserRequestDto(
+    RegisterUserRequest body = new RegisterUserRequest(
         TestValues.email().value(),
         TestValues.username().value(),
         TestValues.fullName(),
@@ -50,7 +50,7 @@ final class UserRegistrationControllerTest {
         password);
 
     // Act
-    RegisterUserResponseDto responseBody = apiActions.registerUser(body);
+    RegisterUserResponse responseBody = apiActions.registerUser(body);
 
     // Assert
     softly.assertThat(responseBody.email()).isEqualTo(body.email());
@@ -63,7 +63,7 @@ final class UserRegistrationControllerTest {
   void registerUser_withoutEmail(String email) {
     // Arrange
     char[] password = TestValues.password();
-    RegisterUserRequestDto body = new RegisterUserRequestDto(
+    RegisterUserRequest body = new RegisterUserRequest(
         email,
         TestValues.username().value(),
         TestValues.fullName(),
@@ -89,7 +89,7 @@ final class UserRegistrationControllerTest {
   void registerUser_invalidEmail() {
     // Arrange
     char[] password = TestValues.password();
-    RegisterUserRequestDto body = new RegisterUserRequestDto(
+    RegisterUserRequest body = new RegisterUserRequest(
         "test",
         TestValues.username().value(),
         TestValues.fullName(),
@@ -117,7 +117,7 @@ final class UserRegistrationControllerTest {
   void registerUser_withoutUsername(String username) {
     // Arrange
     char[] password = TestValues.password();
-    RegisterUserRequestDto body = new RegisterUserRequestDto(
+    RegisterUserRequest body = new RegisterUserRequest(
         TestValues.email().value(),
         username,
         TestValues.fullName(),
@@ -145,7 +145,7 @@ final class UserRegistrationControllerTest {
   void registerUser_usernameOfInvalidLength(String username) {
     // Arrange
     char[] password = TestValues.password();
-    RegisterUserRequestDto body = new RegisterUserRequestDto(
+    RegisterUserRequest body = new RegisterUserRequest(
         TestValues.email().value(),
         username,
         TestValues.fullName(),
@@ -172,7 +172,7 @@ final class UserRegistrationControllerTest {
   void registerUser_invalidUsername() {
     // Arrange
     char[] password = TestValues.password();
-    RegisterUserRequestDto body = new RegisterUserRequestDto(
+    RegisterUserRequest body = new RegisterUserRequest(
         TestValues.email().value(),
         "username@",
         TestValues.fullName(),
@@ -200,7 +200,7 @@ final class UserRegistrationControllerTest {
   void registerUser_withoutFullName(String fullName) {
     // Arrange
     char[] password = TestValues.password();
-    RegisterUserRequestDto body = new RegisterUserRequestDto(
+    RegisterUserRequest body = new RegisterUserRequest(
         TestValues.email().value(),
         TestValues.username().value(),
         fullName,
@@ -226,7 +226,7 @@ final class UserRegistrationControllerTest {
   @NullAndEmptySource
   void registerUser_withoutPassword(char[] password) {
     // Arrange
-    RegisterUserRequestDto body = new RegisterUserRequestDto(
+    RegisterUserRequest body = new RegisterUserRequest(
         TestValues.email().value(),
         TestValues.username().value(),
         TestValues.fullName(),
@@ -254,7 +254,7 @@ final class UserRegistrationControllerTest {
       "thisPasswordIsDefinitelyWayTooLongForTheValidation111!!!!!!!!!!!!"})
   void registerUser_passwordTooShort(String password) {
     // Arrange
-    RegisterUserRequestDto body = new RegisterUserRequestDto(
+    RegisterUserRequest body = new RegisterUserRequest(
         TestValues.email().value(),
         TestValues.username().value(),
         TestValues.fullName(),
@@ -281,7 +281,7 @@ final class UserRegistrationControllerTest {
   void registerUser_passwordInvalidFormat() {
     // Arrange
     String invalidPassword = "password";
-    RegisterUserRequestDto body = new RegisterUserRequestDto(
+    RegisterUserRequest body = new RegisterUserRequest(
         TestValues.email().value(),
         TestValues.username().value(),
         TestValues.fullName(),
@@ -309,7 +309,7 @@ final class UserRegistrationControllerTest {
   @NullAndEmptySource
   void registerUser_withoutPasswordConfirm(char[] passwordConfirm) {
     // Arrange
-    RegisterUserRequestDto body = new RegisterUserRequestDto(
+    RegisterUserRequest body = new RegisterUserRequest(
         TestValues.email().value(),
         TestValues.username().value(),
         TestValues.fullName(),
@@ -335,7 +335,7 @@ final class UserRegistrationControllerTest {
   @Test
   void registerUser_passwordMismatch() {
     // Arrange
-    RegisterUserRequestDto body = new RegisterUserRequestDto(
+    RegisterUserRequest body = new RegisterUserRequest(
         TestValues.email().value(),
         TestValues.username().value(),
         TestValues.fullName(),
@@ -363,7 +363,7 @@ final class UserRegistrationControllerTest {
     String email = TestValues.email().value();
 
     char[] password = TestValues.password();
-    RegisterUserRequestDto initialUser = new RegisterUserRequestDto(
+    RegisterUserRequest initialUser = new RegisterUserRequest(
         email,
         TestValues.username().value(),
         TestValues.fullName(),
@@ -371,7 +371,7 @@ final class UserRegistrationControllerTest {
         password);
     apiActions.registerUser(initialUser);
 
-    RegisterUserRequestDto duplicateUser = new RegisterUserRequestDto(
+    RegisterUserRequest duplicateUser = new RegisterUserRequest(
         email,
         TestValues.username().value(),
         TestValues.fullName(),
@@ -398,7 +398,7 @@ final class UserRegistrationControllerTest {
     String username = TestValues.username().value();
 
     char[] password = TestValues.password();
-    RegisterUserRequestDto initialUser = new RegisterUserRequestDto(
+    RegisterUserRequest initialUser = new RegisterUserRequest(
         TestValues.email().value(),
         username,
         TestValues.fullName(),
@@ -406,7 +406,7 @@ final class UserRegistrationControllerTest {
         password);
     apiActions.registerUser(initialUser);
 
-    RegisterUserRequestDto duplicateUser = new RegisterUserRequestDto(
+    RegisterUserRequest duplicateUser = new RegisterUserRequest(
         TestValues.email().value(),
         username,
         TestValues.fullName(),

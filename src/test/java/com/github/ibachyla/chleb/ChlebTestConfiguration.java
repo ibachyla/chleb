@@ -5,6 +5,7 @@ import static io.restassured.config.ObjectMapperConfig.objectMapperConfig;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.filter.log.LogDetail;
 import io.restassured.module.mockmvc.config.RestAssuredMockMvcConfig;
 import io.restassured.module.mockmvc.specification.MockMvcRequestSpecBuilder;
 import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
@@ -37,6 +38,7 @@ public class ChlebTestConfiguration {
         .setConfig(config)
         .setContentType(APPLICATION_JSON.toString())
         .setMockMvc(mockMvc)
+        .log(LogDetail.ALL)
         .build();
   }
 
@@ -47,7 +49,18 @@ public class ChlebTestConfiguration {
    * @return API actions
    */
   @Bean
-  public ApiActions apiActions(MockMvcRequestSpecification reqSpec) {
-    return new ApiActions(reqSpec);
+  public ApiActions apiActions(MockMvcRequestSpecification reqSpec, TokenProvider tokenProvider) {
+    return new ApiActions(reqSpec, tokenProvider);
+  }
+
+  @Bean
+  public CredentialsProvider userPool(MockMvcRequestSpecification reqSpec) {
+    return new CredentialsProvider(reqSpec);
+  }
+
+  @Bean
+  public TokenProvider tokenProvider(CredentialsProvider credentialsProvider,
+                                     MockMvcRequestSpecification reqSpec) {
+    return new TokenProvider(credentialsProvider, reqSpec);
   }
 }

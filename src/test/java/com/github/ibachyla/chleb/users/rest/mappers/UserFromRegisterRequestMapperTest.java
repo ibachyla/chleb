@@ -5,20 +5,20 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.github.ibachyla.chleb.mappers.Mapper;
 import com.github.ibachyla.chleb.users.models.entities.User;
-import com.github.ibachyla.chleb.users.rest.dto.RegisterUserRequestDto;
+import com.github.ibachyla.chleb.users.rest.dto.RegisterUserRequest;
 import org.junit.jupiter.api.Test;
 
 final class UserFromRegisterRequestMapperTest {
 
   private static final String ENCODED_PASSWORD = "encodedPassword";
 
-  private final Mapper<RegisterUserRequestDto, User> mapper =
+  private final Mapper<RegisterUserRequest, User> mapper =
       new UserFromRegisterRequestMapper(password -> ENCODED_PASSWORD);
 
   @Test
   void map_success() {
     // Arrange
-    RegisterUserRequestDto requestDto = new RegisterUserRequestDto(
+    RegisterUserRequest requestDto = new RegisterUserRequest(
         "test@test.com",
         "testUser",
         "Test User",

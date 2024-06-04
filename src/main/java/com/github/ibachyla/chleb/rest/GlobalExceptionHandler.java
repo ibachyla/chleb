@@ -4,12 +4,13 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toUnmodifiableList;
 
-import com.github.ibachyla.chleb.recipes.rest.dto.ErrorResponse;
+import com.github.ibachyla.chleb.rest.dto.ErrorResponse;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -79,5 +80,11 @@ public class GlobalExceptionHandler {
     messageBuilder.append(errorMessages);
 
     return new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY.value(), messageBuilder.toString());
+  }
+
+  @ExceptionHandler(AuthenticationException.class)
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
+  public ErrorResponse handleAuthenticationException(AuthenticationException ex) {
+    return new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
   }
 }

@@ -1,19 +1,21 @@
 package com.github.ibachyla.chleb.recipes.rest;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
 
 import com.github.ibachyla.chleb.mappers.Mapper;
 import com.github.ibachyla.chleb.recipes.models.entities.Recipe;
 import com.github.ibachyla.chleb.recipes.rest.dto.CreateRecipeRequest;
-import com.github.ibachyla.chleb.recipes.rest.dto.ErrorResponse;
 import com.github.ibachyla.chleb.recipes.rest.dto.GetRecipeResponse;
 import com.github.ibachyla.chleb.recipes.services.RecipeService;
 import com.github.ibachyla.chleb.recipes.services.exceptions.RecipeNotFoundException;
+import com.github.ibachyla.chleb.rest.dto.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -49,10 +51,13 @@ public class RecipeController {
    * @param body request body
    * @return slug of the created recipe
    */
-  @ApiResponse(responseCode = "201", description = "Successful Response")
+  @SecurityRequirement(name = "Bearer Auth")
+  @ApiResponse(responseCode = "201",
+      description = "Successful Response",
+      content = @Content(mediaType = TEXT_PLAIN_VALUE))
   @Operation(summary = "Create One",
       description = "Takes in a JSON string and loads data into the database as a new entry")
-  @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+  @PostMapping(produces = TEXT_PLAIN_VALUE, consumes = APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
   public String createRecipe(@Valid @RequestBody CreateRecipeRequest body) {
     log.info("Creating recipe with name: {}", body.name());

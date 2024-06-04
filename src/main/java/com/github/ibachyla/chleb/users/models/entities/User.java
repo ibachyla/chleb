@@ -6,6 +6,7 @@ import static org.apache.commons.lang3.Validate.notNull;
 import com.github.ibachyla.chleb.models.entities.Entity;
 import com.github.ibachyla.chleb.users.models.values.Email;
 import com.github.ibachyla.chleb.users.models.values.HashedPassword;
+import com.github.ibachyla.chleb.users.models.values.Role;
 import com.github.ibachyla.chleb.users.models.values.Username;
 import java.util.UUID;
 import lombok.EqualsAndHashCode;
@@ -22,6 +23,7 @@ public class User extends Entity {
   private Username username;
   private String fullName;
   private HashedPassword password;
+  private Role role;
 
   /**
    * Constructor.
@@ -36,6 +38,7 @@ public class User extends Entity {
     username(username);
     fullName(fullName);
     password(password);
+    role(Role.USER);
   }
 
   /**
@@ -47,12 +50,18 @@ public class User extends Entity {
    * @param fullName full name
    * @param password password
    */
-  public User(UUID id, Email email, Username username, String fullName, HashedPassword password) {
+  public User(UUID id,
+              Email email,
+              Username username,
+              String fullName,
+              HashedPassword password,
+              Role role) {
     super(id);
     email(email);
     username(username);
     fullName(fullName);
     password(password);
+    role(role);
   }
 
   /**
@@ -98,5 +107,16 @@ public class User extends Entity {
     notNull(password, "password cannot be null");
 
     this.password = password;
+  }
+
+  /**
+   * Sets the role.
+   *
+   * @param role role
+   */
+  public void role(Role role) {
+    notNull(role, "role cannot be null");
+
+    this.role = role;
   }
 }

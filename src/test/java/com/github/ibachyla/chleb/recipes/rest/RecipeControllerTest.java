@@ -7,10 +7,15 @@ import com.github.ibachyla.chleb.ApiActions;
 import com.github.ibachyla.chleb.ChlebTestConfiguration;
 import com.github.ibachyla.chleb.recipes.TestValues;
 import com.github.ibachyla.chleb.recipes.rest.dto.CreateRecipeRequest;
-import com.github.ibachyla.chleb.recipes.rest.dto.ErrorResponse;
 import com.github.ibachyla.chleb.recipes.rest.dto.GetRecipeResponse;
+import com.github.ibachyla.chleb.rest.dto.ErrorResponse;
+import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.response.MockMvcResponse;
+import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
+import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,10 +27,14 @@ import org.springframework.test.context.ActiveProfiles;
 @AutoConfigureMockMvc
 @ActiveProfiles(TEST_PROFILE)
 @Import(ChlebTestConfiguration.class)
+@ExtendWith(SoftAssertionsExtension.class)
 final class RecipeControllerTest {
 
   static final String RECIPE_NAME = TestValues.recipeName().value();
   static final CreateRecipeRequest BODY = new CreateRecipeRequest(RECIPE_NAME);
+
+  @InjectSoftAssertions
+  SoftAssertions softly;
 
   @Autowired
   ApiActions apiActions;
@@ -33,7 +42,7 @@ final class RecipeControllerTest {
   @Test
   void createRecipe() {
     // Act
-    String response = apiActions.createRecipe(BODY);
+    String response = apiActions.auth().createRecipe(BODY);
 
     // Assert
     assertThat(response).startsWith("potato-bread-");
@@ -45,7 +54,7 @@ final class RecipeControllerTest {
     CreateRecipeRequest body = new CreateRecipeRequest("");
 
     // Act
-    MockMvcResponse response = apiActions.raw().createRecipe(body);
+    MockMvcResponse response = apiActions.auth().raw().createRecipe(body);
 
     // Assert
     ErrorResponse responseBody = response.then()
@@ -59,12 +68,28 @@ final class RecipeControllerTest {
   }
 
   @Test
+  void createRecipe_notAuthenticated() {
+    // Act
+    MockMvcResponse response = apiActions.raw().createRecipe(BODY);
+
+    // Assert
+    ErrorResponse responseBody = response.then()
+        .statusCode(HttpStatus.UNAUTHORIZED.value())
+        .contentType(ContentType.JSON)
+        .extract()
+        .body()
+        .as(ErrorResponse.class);
+    softly.assertThat(responseBody.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+    softly.assertThat(responseBody.message()).isEqualTo("Unauthorized");
+  }
+
+  @Test
   void getRecipe_bySlug() {
     // Arrange
-    String slug = apiActions.createRecipe(BODY);
+    String slug = apiActions.auth().createRecipe(BODY);
 
     // Act
-    GetRecipeResponse response = apiActions.getRecipe(slug);
+    GetRecipeResponse response = apiActions.auth().getRecipe(slug);
 
     // Assert
     assertThat(response.slug()).isEqualTo(slug);
@@ -73,11 +98,11 @@ final class RecipeControllerTest {
   @Test
   void getRecipe_byId() {
     // Arrange
-    String slug = apiActions.createRecipe(BODY);
-    String id = apiActions.getRecipe(slug).id();
+    String slug = apiActions.auth().createRecipe(BODY);
+    String id = apiActions.auth().getRecipe(slug).id();
 
     // Act
-    GetRecipeResponse response = apiActions.getRecipe(id);
+    GetRecipeResponse response = apiActions.auth().getRecipe(id);
 
     // Assert
     assertThat(response.slug()).isEqualTo(slug);
@@ -87,7 +112,7 @@ final class RecipeControllerTest {
   @Test
   void getRecipe_notFound() {
     // Act
-    MockMvcResponse response = apiActions.raw().getRecipe("not-found");
+    MockMvcResponse response = apiActions.auth().raw().getRecipe("not-found");
 
     // Assert
     ErrorResponse responseBody = response.then()

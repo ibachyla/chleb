@@ -7,6 +7,7 @@ import com.github.ibachyla.chleb.users.data.entities.UserEntity;
 import com.github.ibachyla.chleb.users.models.entities.User;
 import com.github.ibachyla.chleb.users.models.values.Email;
 import com.github.ibachyla.chleb.users.models.values.HashedPassword;
+import com.github.ibachyla.chleb.users.models.values.Role;
 import com.github.ibachyla.chleb.users.models.values.Username;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,8 @@ final class UserToPersistenceEntityMapperTest {
         new Email("test@example.com"),
         new Username("testuser"),
         "Test User",
-        new HashedPassword("ValidPassword1!"));
+        new HashedPassword("ValidPassword1!"),
+        Role.USER);
 
     // Act
     UserEntity userEntity = mapper.doMap(user);
@@ -34,5 +36,6 @@ final class UserToPersistenceEntityMapperTest {
     assertThat(userEntity.username()).isEqualTo(user.username().value());
     assertThat(userEntity.fullName()).isEqualTo(user.fullName());
     assertThat(userEntity.password()).isEqualTo(user.password().value());
+    assertThat(userEntity.role()).isEqualTo(user.role());
   }
 }

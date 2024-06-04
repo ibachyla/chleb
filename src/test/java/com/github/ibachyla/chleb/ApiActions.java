@@ -1,12 +1,17 @@
 package com.github.ibachyla.chleb;
 
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
+import static org.apache.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 import com.github.ibachyla.chleb.recipes.rest.dto.CreateRecipeRequest;
 import com.github.ibachyla.chleb.recipes.rest.dto.GetRecipeResponse;
-import com.github.ibachyla.chleb.users.rest.dto.RegisterUserRequestDto;
-import com.github.ibachyla.chleb.users.rest.dto.RegisterUserResponseDto;
+import com.github.ibachyla.chleb.users.rest.dto.GetTokenResponse;
+import com.github.ibachyla.chleb.users.rest.dto.RegisterUserRequest;
+import com.github.ibachyla.chleb.users.rest.dto.RegisterUserResponse;
 import io.restassured.module.mockmvc.response.MockMvcResponse;
+import io.restassured.module.mockmvc.specification.MockMvcRequestSpecBuilder;
 import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
 import org.apache.http.HttpStatus;
 
@@ -18,11 +23,13 @@ public class ApiActions {
   private static final String API = "/api";
 
   private final MockMvcRequestSpecification reqSpec;
+  private final TokenProvider tokenProvider;
 
   private final Raw raw = new Raw();
 
-  public ApiActions(MockMvcRequestSpecification reqSpec) {
+  public ApiActions(MockMvcRequestSpecification reqSpec, TokenProvider tokenProvider) {
     this.reqSpec = reqSpec;
+    this.tokenProvider = tokenProvider;
   }
 
   /**
@@ -37,18 +44,65 @@ public class ApiActions {
   }
 
   /**
+   * Get an instance of API actions with authentication.
+   * <p>Each request performed using returned instance will be extended with the Authorization
+   * header specifying valid token for a default user.</p>
+   *
+   * @return API actions with authentication
+   */
+  public ApiActions auth() {
+    MockMvcRequestSpecification reqSpecWithAuth = new MockMvcRequestSpecBuilder()
+        .addMockMvcRequestSpecification(reqSpec)
+        .addHeader(AUTHORIZATION, tokenProvider.get())
+        .build();
+    return new ApiActions(reqSpecWithAuth, tokenProvider);
+  }
+
+  /**
+   * Get an instance of API actions with authentication.
+   * <p>Each request performed using returned instance will be extended with the Authorization
+   * header specifying the provided token.</p>
+   *
+   * @param token token
+   * @return API actions with authentication
+   */
+  public ApiActions auth(String token) {
+    MockMvcRequestSpecification reqSpecWithAuth = new MockMvcRequestSpecBuilder()
+        .addMockMvcRequestSpecification(reqSpec)
+        .addHeader(AUTHORIZATION, "Bearer " + token)
+        .build();
+    return new ApiActions(reqSpecWithAuth, tokenProvider);
+  }
+
+  /**
    * Register a user.
    *
    * @param body user details
    * @return response with user details
    */
-  public RegisterUserResponseDto registerUser(RegisterUserRequestDto body) {
+  public RegisterUserResponse registerUser(RegisterUserRequest body) {
     return raw().registerUser(body)
         .then()
         .statusCode(HttpStatus.SC_CREATED)
         .contentType(APPLICATION_JSON.getType())
         .extract()
-        .as(RegisterUserResponseDto.class);
+        .as(RegisterUserResponse.class);
+  }
+
+  /**
+   * Get a token.
+   *
+   * @param username username
+   * @param password password
+   * @return response with token
+   */
+  public GetTokenResponse getToken(String username, char[] password) {
+    return raw().getToken(username, password)
+        .then()
+        .statusCode(HttpStatus.SC_OK)
+        .contentType(APPLICATION_JSON.getType())
+        .extract()
+        .as(GetTokenResponse.class);
   }
 
   /**
@@ -91,10 +145,30 @@ public class ApiActions {
      * @param body user details
      * @return response
      */
-    public MockMvcResponse registerUser(RegisterUserRequestDto body) {
-      return reqSpec
+    public MockMvcResponse registerUser(RegisterUserRequest body) {
+      return given()
+          .spec(reqSpec)
+          .contentType(APPLICATION_JSON)
           .body(body)
+          .when()
           .post(API + "/users/register");
+    }
+
+    /**
+     * Get a token.
+     *
+     * @param username username
+     * @param password password
+     * @return response
+     */
+    public MockMvcResponse getToken(String username, char[] password) {
+      return given()
+          .spec(reqSpec)
+          .contentType(APPLICATION_FORM_URLENCODED)
+          .formParam("username", username)
+          .formParam("password", new String(password))
+          .when()
+          .post(API + "/auth/token");
     }
 
     /**
@@ -104,9 +178,11 @@ public class ApiActions {
      * @return response
      */
     public MockMvcResponse createRecipe(CreateRecipeRequest body) {
-      return reqSpec
+      return given()
+          .spec(reqSpec)
           .contentType(APPLICATION_JSON)
           .body(body)
+          .when()
           .post(API + "/recipes");
     }
 
@@ -117,7 +193,10 @@ public class ApiActions {
      * @return response
      */
     public MockMvcResponse getRecipe(String slugOrId) {
-      return reqSpec.get(API + "/recipes/" + slugOrId);
+      return given()
+          .spec(reqSpec)
+          .when()
+          .get(API + "/recipes/" + slugOrId);
     }
   }
 }

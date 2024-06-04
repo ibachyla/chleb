@@ -21,7 +21,8 @@ public class UserFromPersistenceEntityMapper extends AbstractMapper<UserEntity, 
         new Email(source.email()),
         new Username(source.username()),
         source.fullName(),
-        new HashedPassword(source.password())
+        new HashedPassword(source.password()),
+        source.role()
     );
   }
 }

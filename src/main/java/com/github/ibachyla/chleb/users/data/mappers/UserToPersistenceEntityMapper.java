@@ -19,6 +19,7 @@ public class UserToPersistenceEntityMapper extends AbstractMapper<User, UserEnti
     userEntity.username(source.username().value());
     userEntity.fullName(source.fullName());
     userEntity.password(source.password().value());
+    userEntity.role(source.role());
 
     return userEntity;
   }

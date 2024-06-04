@@ -1,8 +1,11 @@
 package com.github.ibachyla.chleb.users.data.entities;
 
 import com.github.ibachyla.chleb.data.entities.IdentifiedEntity;
+import com.github.ibachyla.chleb.users.models.values.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,4 +30,8 @@ public class UserEntity extends IdentifiedEntity {
 
   @Column(nullable = false)
   private String password;
+
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false, length = 10)
+  private Role role;
 }

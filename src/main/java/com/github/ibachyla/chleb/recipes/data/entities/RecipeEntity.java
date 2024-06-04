@@ -23,8 +23,8 @@ public class RecipeEntity extends IdentifiedEntity {
   private String slug;
 
   @Column(nullable = false)
-  private long createdAt;
+  private Long createdAt;
 
   @Column(nullable = false)
-  private long updatedAt;
+  private Long updatedAt;
 }

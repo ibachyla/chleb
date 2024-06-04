@@ -7,5 +7,7 @@ import com.github.ibachyla.chleb.users.models.entities.User;
  */
 public interface UserService {
 
-  User registerUser(User user);
+  User register(User user);
+
+  String login(String usernameOrEmail, char[] password);
 }
