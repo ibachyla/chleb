@@ -7,7 +7,7 @@ plugins {
     id("org.springframework.boot") version "3.3.2"
     id("io.spring.dependency-management") version "1.1.5"
     id("net.ltgt.errorprone") version "3.1.0"
-    id("com.github.spotbugs") version "6.0.12"
+    id("com.github.spotbugs") version "6.0.19"
 }
 
 group = "com.github.ibachyla"
