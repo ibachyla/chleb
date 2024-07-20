@@ -1,6 +1,11 @@
 package com.github.ibachyla.chleb.users;
 
+import static java.util.UUID.randomUUID;
+
+import com.github.ibachyla.chleb.users.models.entities.User;
 import com.github.ibachyla.chleb.users.models.values.Email;
+import com.github.ibachyla.chleb.users.models.values.HashedPassword;
+import com.github.ibachyla.chleb.users.models.values.Role;
 import com.github.ibachyla.chleb.users.models.values.Username;
 import net.datafaker.Faker;
 
@@ -52,5 +57,13 @@ public class TestValues {
         .password(8, 60, true, true, true)
         .concat("1Aa!")
         .toCharArray();
+  }
+
+  public static HashedPassword hashedPassword() {
+    return new HashedPassword(faker.internet().password());
+  }
+
+  public static User user() {
+    return new User(randomUUID(), email(), username(), fullName(), hashedPassword(), Role.USER);
   }
 }

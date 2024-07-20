@@ -43,7 +43,7 @@ public class TokenProvider {
    * @return a valid token
    */
   public String get() {
-    if (token != null && !isExpired(token)) {
+    if (token != null && !isExpired(token) && !willSoonExpire(token)) {
       return token;
     }
 
@@ -51,6 +51,8 @@ public class TokenProvider {
     try {
       if (token == null || isExpired(token)) {
         token = requestToken();
+      } else if (willSoonExpire(token)) {
+        token = refreshToken();
       }
       return token;
     } finally {
@@ -77,8 +79,33 @@ public class TokenProvider {
     return "Bearer " + token;
   }
 
+  private String refreshToken() {
+    return given()
+        .spec(reqSpec)
+        .when()
+        .get("api/auth/refresh")
+        .then()
+        .statusCode(HttpStatus.SC_OK)
+        .extract()
+        .as(GetTokenResponse.class)
+        .accessToken();
+  }
+
   @SuppressWarnings("TimeZoneUsage")
   private boolean isExpired(String token) {
+    long exp = getExpirationTime(token);
+
+    return Instant.now().getEpochSecond() > exp;
+  }
+
+  @SuppressWarnings("TimeZoneUsage")
+  private boolean willSoonExpire(String token) {
+    long exp = getExpirationTime(token);
+
+    return Instant.now().getEpochSecond() + 30 > exp;
+  }
+
+  private long getExpirationTime(String token) {
     String jwtToken = token.substring(7);
     String payload = Iterables.get(Splitter.on('.').split(jwtToken), 1);
     String decodedPayload = new String(Base64.getUrlDecoder().decode(payload), UTF_8);
@@ -91,6 +118,6 @@ public class TokenProvider {
       throw new RuntimeException("Failed to parse JWT token", e);
     }
 
-    return Instant.now().getEpochSecond() + 30 > exp;
+    return exp;
   }
 }

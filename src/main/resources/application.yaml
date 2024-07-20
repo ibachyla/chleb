@@ -1,6 +1,8 @@
 chleb:
   security:
     issuer: http://localhost:8080
+    token-expiration-time: 5
+    token-expiration-unit: minutes
 
 spring:
   datasource:

@@ -12,7 +12,6 @@ import com.github.ibachyla.chleb.users.rest.dto.RegisterUserRequest;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.response.MockMvcResponse;
 import java.time.Duration;
-import java.time.temporal.TemporalAmount;
 import org.apache.http.HttpStatus;
 import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
@@ -26,12 +25,17 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(properties = "spring.main.allow-bean-definition-overriding=true")
 @AutoConfigureMockMvc
 @ActiveProfiles(TEST_PROFILE)
 @Import(ChlebTestConfiguration.class)
 @ExtendWith(SoftAssertionsExtension.class)
+@TestPropertySource(properties = {
+    "chleb.security.token-expiration-time=1",
+    "chleb.security.token-expiration-unit=micros"
+})
 final class TokenExpirationTest {
 
   @InjectSoftAssertions
@@ -42,11 +46,6 @@ final class TokenExpirationTest {
 
   @TestConfiguration
   static class TokenExpirationTestConfig {
-
-    @Bean
-    public TemporalAmount tokenExpiration() {
-      return Duration.ofMillis(1);
-    }
 
     @Bean
     public Duration clockSkew() {

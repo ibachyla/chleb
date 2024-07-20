@@ -7,6 +7,7 @@ import java.time.Duration;
 import java.time.temporal.TemporalAmount;
 import org.springframework.security.oauth2.jose.jws.JwsAlgorithms;
 import org.springframework.security.oauth2.jwt.JwsHeader;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -29,22 +30,30 @@ public class JwtTokenSupplierImpl implements JwtTokenSupplier {
    * @param securityProperties the security properties
    * @param jwtEncoder         the JWT encoder
    * @param clock              the clock
-   * @param tokenExpiration    the duration after which the token expires
    */
   public JwtTokenSupplierImpl(SecurityProperties securityProperties,
                               JwtEncoder jwtEncoder,
-                              Clock clock,
-                              TemporalAmount tokenExpiration) {
+                              Clock clock) {
     this.securityProperties = securityProperties;
     this.jwtEncoder = jwtEncoder;
     this.clock = clock;
-    this.tokenExpiration = Duration.from(tokenExpiration);
+    this.tokenExpiration = Duration.of(securityProperties.tokenExpirationTime(),
+        securityProperties.tokenExpirationUnit());
   }
 
   @Override
   public String supply(User user) {
+    return buildToken(user.id().toString());
+  }
+
+  @Override
+  public String refresh(Jwt token) {
+    return buildToken(token.getSubject());
+  }
+
+  private String buildToken(String subject) {
     JwtClaimsSet claims = JwtClaimsSet.builder()
-        .subject(user.id().toString())
+        .subject(subject)
         .issuer(securityProperties.issuer().toString())
         .expiresAt(clock.instant().plus(tokenExpiration))
         .build();
