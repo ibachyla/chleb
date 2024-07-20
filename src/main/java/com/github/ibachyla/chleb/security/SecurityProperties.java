@@ -1,7 +1,9 @@
 package com.github.ibachyla.chleb.security;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import java.net.URL;
+import java.time.temporal.ChronoUnit;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
@@ -12,5 +14,7 @@ import org.springframework.validation.annotation.Validated;
  */
 @Validated
 @ConfigurationProperties(prefix = "chleb.security")
-public record SecurityProperties(@NotNull URL issuer) {
+public record SecurityProperties(@NotNull URL issuer,
+                                 @Positive long tokenExpirationTime,
+                                 @NotNull ChronoUnit tokenExpirationUnit) {
 }

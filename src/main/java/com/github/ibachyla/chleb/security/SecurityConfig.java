@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.security.OAuthFlows;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import java.nio.CharBuffer;
 import java.time.Duration;
-import java.time.temporal.TemporalAmount;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import lombok.SneakyThrows;
@@ -126,11 +125,6 @@ public class SecurityConfig {
   public JwtEncoder jwtEncoder() {
     JWKSource<SecurityContext> immutableSecret = new ImmutableSecret<>(SECRET_KEY);
     return new NimbusJwtEncoder(immutableSecret);
-  }
-
-  @Bean
-  public TemporalAmount tokenExpiration() {
-    return Duration.ofMinutes(5);
   }
 
   @Bean

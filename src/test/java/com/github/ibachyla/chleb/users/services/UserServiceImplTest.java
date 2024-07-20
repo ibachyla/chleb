@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.github.ibachyla.chleb.security.services.JwtTokenSupplier;
 import com.github.ibachyla.chleb.users.data.entities.UserEntity;
 import com.github.ibachyla.chleb.users.data.mappers.UserFromPersistenceEntityMapper;
 import com.github.ibachyla.chleb.users.data.mappers.UserToPersistenceEntityMapper;
@@ -38,6 +39,9 @@ final class UserServiceImplTest {
   @Mock
   UserRepository userRepositoryMock;
 
+  @Mock
+  JwtTokenSupplier jwtTokenSupplier;
+
   UserService userService;
 
   @BeforeEach
@@ -46,7 +50,7 @@ final class UserServiceImplTest {
         new UserToPersistenceEntityMapper(),
         new UserFromPersistenceEntityMapper(),
         (password, encodedPassword) -> true,
-        user -> "token");
+        jwtTokenSupplier);
   }
 
   @Test

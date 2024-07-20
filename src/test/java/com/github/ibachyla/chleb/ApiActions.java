@@ -106,6 +106,22 @@ public class ApiActions {
   }
 
   /**
+   * Refresh the JWT token.
+   *
+   * <p>Requires a valid token to be present in the Authorization header.</p>
+   *
+   * @return response with new token
+   */
+  public GetTokenResponse refreshToken() {
+    return raw().refreshToken()
+        .then()
+        .statusCode(HttpStatus.SC_OK)
+        .contentType(APPLICATION_JSON.getType())
+        .extract()
+        .as(GetTokenResponse.class);
+  }
+
+  /**
    * Create a recipe.
    *
    * @param body recipe details
@@ -169,6 +185,20 @@ public class ApiActions {
           .formParam("password", new String(password))
           .when()
           .post(API + "/auth/token");
+    }
+
+    /**
+     * Refresh the JWT token.
+     *
+     * <p>Requires a valid token to be present in the Authorization header.</p>
+     *
+     * @return response with new token
+     */
+    public MockMvcResponse refreshToken() {
+      return given()
+          .spec(reqSpec)
+          .when()
+          .get(API + "/auth/refresh");
     }
 
     /**
