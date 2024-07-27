@@ -6,7 +6,7 @@ plugins {
     pmd
     id("org.springframework.boot") version "3.3.2"
     id("io.spring.dependency-management") version "1.1.5"
-    id("net.ltgt.errorprone") version "3.1.0"
+    id("net.ltgt.errorprone") version "4.0.1"
     id("com.github.spotbugs") version "6.0.19"
 }
 
