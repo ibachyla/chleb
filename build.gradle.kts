@@ -36,7 +36,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("org.liquibase:liquibase-core")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
-    implementation("commons-validator:commons-validator:1.8.0")
+    implementation("commons-validator:commons-validator:1.9.0")
 
     compileOnly("org.projectlombok:lombok")
     compileOnly("com.google.code.findbugs:annotations:3.0.1u2")
