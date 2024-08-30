@@ -1,5 +1,6 @@
 package com.github.ibachyla.chleb.users.rest;
 
+import static com.github.ibachyla.chleb.security.SecurityProperties.SECURITY_SCHEME_NAME;
 import static com.github.ibachyla.chleb.utils.ArrayUtils.fillWithZeroes;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -70,6 +72,7 @@ public class AuthController {
    *
    * @return new JWT token
    */
+  @SecurityRequirement(name = SECURITY_SCHEME_NAME)
   @ApiResponse(responseCode = "200", description = "Successful Response")
   @Operation(summary = "Refresh Token")
   @GetMapping(path = "/refresh", produces = APPLICATION_JSON_VALUE)

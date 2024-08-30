@@ -2,6 +2,7 @@ package com.github.ibachyla.chleb.users.data.entities;
 
 import com.github.ibachyla.chleb.data.entities.IdentifiedEntity;
 import com.github.ibachyla.chleb.users.models.values.Role;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -17,6 +18,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "users")
+@SuppressFBWarnings("EQ_DOESNT_OVERRIDE_EQUALS")
 public class UserEntity extends IdentifiedEntity {
 
   @Column(nullable = false, unique = true)

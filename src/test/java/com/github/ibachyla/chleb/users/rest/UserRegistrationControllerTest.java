@@ -71,7 +71,7 @@ final class UserRegistrationControllerTest {
         password);
 
     // Act
-    MockMvcResponse response = apiActions.raw().registerUser(body);
+    MockMvcResponse response = apiActions.raw(false).registerUser(body);
 
     // Assert
     ErrorResponse responseBody = response.then()
@@ -125,7 +125,7 @@ final class UserRegistrationControllerTest {
         password);
 
     // Act
-    MockMvcResponse response = apiActions.raw().registerUser(body);
+    MockMvcResponse response = apiActions.raw(false).registerUser(body);
 
     // Assert
     ErrorResponse responseBody = response.then()
@@ -153,7 +153,7 @@ final class UserRegistrationControllerTest {
         password);
 
     // Act
-    MockMvcResponse response = apiActions.raw().registerUser(body);
+    MockMvcResponse response = apiActions.raw(false).registerUser(body);
 
     // Assert
     ErrorResponse responseBody = response.then()
@@ -208,7 +208,7 @@ final class UserRegistrationControllerTest {
         password);
 
     // Act
-    MockMvcResponse response = apiActions.raw().registerUser(body);
+    MockMvcResponse response = apiActions.raw(false).registerUser(body);
 
     // Assert
     ErrorResponse responseBody = response.then()
@@ -234,7 +234,7 @@ final class UserRegistrationControllerTest {
         password);
 
     // Act
-    MockMvcResponse response = apiActions.raw().registerUser(body);
+    MockMvcResponse response = apiActions.raw(false).registerUser(body);
 
     // Assert
     ErrorResponse responseBody = response.then()
@@ -262,7 +262,7 @@ final class UserRegistrationControllerTest {
         password.toCharArray());
 
     // Act
-    MockMvcResponse response = apiActions.raw().registerUser(body);
+    MockMvcResponse response = apiActions.raw(false).registerUser(body);
 
     // Assert
     ErrorResponse responseBody = response.then()
@@ -317,7 +317,7 @@ final class UserRegistrationControllerTest {
         passwordConfirm);
 
     // Act
-    MockMvcResponse response = apiActions.raw().registerUser(body);
+    MockMvcResponse response = apiActions.raw(false).registerUser(body);
 
     // Assert
     ErrorResponse responseBody = response.then()

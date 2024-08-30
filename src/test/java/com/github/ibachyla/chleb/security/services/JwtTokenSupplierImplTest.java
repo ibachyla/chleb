@@ -30,6 +30,7 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.testcontainers.shaded.com.google.common.collect.ImmutableList;
 
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(SoftAssertionsExtension.class)
@@ -44,7 +45,7 @@ final class JwtTokenSupplierImplTest {
   private static final Duration TOKEN_EXPIRATION =
       Duration.of(TOKEN_EXPIRATION_TIME, TOKEN_EXPIRATION_UNIT);
   private static final SecurityProperties SECURITY_PROPERTIES = new SecurityProperties(
-      issuer(), TOKEN_EXPIRATION_TIME, TOKEN_EXPIRATION_UNIT);
+      issuer(), TOKEN_EXPIRATION_TIME, TOKEN_EXPIRATION_UNIT, ImmutableList.of());
 
   @InjectSoftAssertions
   SoftAssertions softly;

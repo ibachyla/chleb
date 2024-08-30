@@ -5,6 +5,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import com.github.ibachyla.chleb.mappers.Mapper;
 import com.github.ibachyla.chleb.rest.dto.ErrorResponse;
 import com.github.ibachyla.chleb.users.models.entities.User;
+import com.github.ibachyla.chleb.users.rest.dto.OpenApiOptimizedRegisterUserRequest;
 import com.github.ibachyla.chleb.users.rest.dto.RegisterUserRequest;
 import com.github.ibachyla.chleb.users.rest.dto.RegisterUserResponse;
 import com.github.ibachyla.chleb.users.services.UserService;
@@ -46,7 +47,16 @@ public class UserRegistrationController {
    * @return description of the created user
    */
   @ApiResponse(responseCode = "201", description = "Successful Response")
-  @Operation(summary = "Register New User")
+  @ApiResponse(responseCode = "422",
+      description = "Validation Error",
+      content = @Content(mediaType = "application/json",
+          schema = @Schema(implementation = ErrorResponse.class))
+  )
+  @Operation(summary = "Register New User",
+      requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+          content = @Content(mediaType = "application/json",
+              schema = @Schema(implementation = OpenApiOptimizedRegisterUserRequest.class)
+          )))
   @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
   public RegisterUserResponse registerUser(@Valid @RequestBody RegisterUserRequest body) {

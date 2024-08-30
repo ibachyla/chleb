@@ -5,6 +5,11 @@ import static org.apache.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
+import com.atlassian.oai.validator.OpenApiInteractionValidator;
+import com.atlassian.oai.validator.mockmvc.MockMvcRequest;
+import com.atlassian.oai.validator.report.ValidationReport;
+import com.github.ibachyla.chleb.app.rest.dto.GetAboutResponse;
+import com.github.ibachyla.chleb.app.rest.dto.GetThemeResponse;
 import com.github.ibachyla.chleb.recipes.rest.dto.CreateRecipeRequest;
 import com.github.ibachyla.chleb.recipes.rest.dto.GetRecipeResponse;
 import com.github.ibachyla.chleb.users.rest.dto.GetTokenResponse;
@@ -14,6 +19,7 @@ import io.restassured.module.mockmvc.response.MockMvcResponse;
 import io.restassured.module.mockmvc.specification.MockMvcRequestSpecBuilder;
 import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
 import org.apache.http.HttpStatus;
+import org.springframework.test.web.servlet.MvcResult;
 
 /**
  * Aggregates actions that can be performed on the API.
@@ -24,12 +30,25 @@ public class ApiActions {
 
   private final MockMvcRequestSpecification reqSpec;
   private final TokenProvider tokenProvider;
+  private final OpenApiInteractionValidator defaultOpenApiValidator;
+  private final OpenApiInteractionValidator ignoringRequestOpenApiValidator;
 
-  private final Raw raw = new Raw();
-
-  public ApiActions(MockMvcRequestSpecification reqSpec, TokenProvider tokenProvider) {
+  /**
+   * Constructor.
+   *
+   * @param reqSpec                         RestAssured request specification
+   * @param tokenProvider                   token provider
+   * @param defaultOpenApiValidator         default OpenAPI validator
+   * @param ignoringRequestOpenApiValidator OpenAPI validator that ignores request validation
+   */
+  public ApiActions(MockMvcRequestSpecification reqSpec,
+                    TokenProvider tokenProvider,
+                    OpenApiInteractionValidator defaultOpenApiValidator,
+                    OpenApiInteractionValidator ignoringRequestOpenApiValidator) {
     this.reqSpec = reqSpec;
     this.tokenProvider = tokenProvider;
+    this.defaultOpenApiValidator = defaultOpenApiValidator;
+    this.ignoringRequestOpenApiValidator = ignoringRequestOpenApiValidator;
   }
 
   /**
@@ -40,7 +59,11 @@ public class ApiActions {
    * @return raw API actions
    */
   public Raw raw() {
-    return raw;
+    return new Raw();
+  }
+
+  public Raw raw(boolean validateRequest) {
+    return new Raw(validateRequest);
   }
 
   /**
@@ -55,7 +78,10 @@ public class ApiActions {
         .addMockMvcRequestSpecification(reqSpec)
         .addHeader(AUTHORIZATION, tokenProvider.get())
         .build();
-    return new ApiActions(reqSpecWithAuth, tokenProvider);
+    return new ApiActions(reqSpecWithAuth,
+        tokenProvider,
+        defaultOpenApiValidator,
+        ignoringRequestOpenApiValidator);
   }
 
   /**
@@ -71,7 +97,38 @@ public class ApiActions {
         .addMockMvcRequestSpecification(reqSpec)
         .addHeader(AUTHORIZATION, "Bearer " + token)
         .build();
-    return new ApiActions(reqSpecWithAuth, tokenProvider);
+    return new ApiActions(reqSpecWithAuth,
+        tokenProvider,
+        defaultOpenApiValidator,
+        ignoringRequestOpenApiValidator);
+  }
+
+  /**
+   * Get general application information.
+   *
+   * @return response with application information
+   */
+  public GetAboutResponse getAbout() {
+    return raw().getAbout()
+        .then()
+        .statusCode(HttpStatus.SC_OK)
+        .contentType(APPLICATION_JSON.getType())
+        .extract()
+        .as(GetAboutResponse.class);
+  }
+
+  /**
+   * Get the current theme settings.
+   *
+   * @return response with theme settings
+   */
+  public GetThemeResponse getTheme() {
+    return raw().getTheme()
+        .then()
+        .statusCode(HttpStatus.SC_OK)
+        .contentType(APPLICATION_JSON.getType())
+        .extract()
+        .as(GetThemeResponse.class);
   }
 
   /**
@@ -155,6 +212,44 @@ public class ApiActions {
    */
   public class Raw {
 
+    private final boolean validateRequest;
+
+    public Raw() {
+      this.validateRequest = true;
+    }
+
+    public Raw(boolean validateRequest) {
+      this.validateRequest = validateRequest;
+    }
+
+    /**
+     * Get general application information.
+     *
+     * @return response
+     */
+    public MockMvcResponse getAbout() {
+      return validateSpecCompliance(
+          given()
+              .spec(reqSpec)
+              .when()
+              .get(API + "/app/about")
+      );
+    }
+
+    /**
+     * Get the current theme settings.
+     *
+     * @return response
+     */
+    public MockMvcResponse getTheme() {
+      return validateSpecCompliance(
+          given()
+              .spec(reqSpec)
+              .when()
+              .get(API + "/app/about/theme")
+      );
+    }
+
     /**
      * Register a user.
      *
@@ -162,12 +257,14 @@ public class ApiActions {
      * @return response
      */
     public MockMvcResponse registerUser(RegisterUserRequest body) {
-      return given()
-          .spec(reqSpec)
-          .contentType(APPLICATION_JSON)
-          .body(body)
-          .when()
-          .post(API + "/users/register");
+      return validateSpecCompliance(
+          given()
+              .spec(reqSpec)
+              .contentType(APPLICATION_JSON)
+              .body(body)
+              .when()
+              .post(API + "/users/register")
+      );
     }
 
     /**
@@ -178,13 +275,15 @@ public class ApiActions {
      * @return response
      */
     public MockMvcResponse getToken(String username, char[] password) {
-      return given()
-          .spec(reqSpec)
-          .contentType(APPLICATION_FORM_URLENCODED)
-          .formParam("username", username)
-          .formParam("password", new String(password))
-          .when()
-          .post(API + "/auth/token");
+      return validateSpecCompliance(
+          given()
+              .spec(reqSpec)
+              .contentType(APPLICATION_FORM_URLENCODED)
+              .formParam("username", username)
+              .formParam("password", new String(password))
+              .when()
+              .post(API + "/auth/token")
+      );
     }
 
     /**
@@ -195,10 +294,12 @@ public class ApiActions {
      * @return response with new token
      */
     public MockMvcResponse refreshToken() {
-      return given()
-          .spec(reqSpec)
-          .when()
-          .get(API + "/auth/refresh");
+      return validateSpecCompliance(
+          given()
+              .spec(reqSpec)
+              .when()
+              .get(API + "/auth/refresh")
+      );
     }
 
     /**
@@ -208,12 +309,14 @@ public class ApiActions {
      * @return response
      */
     public MockMvcResponse createRecipe(CreateRecipeRequest body) {
-      return given()
-          .spec(reqSpec)
-          .contentType(APPLICATION_JSON)
-          .body(body)
-          .when()
-          .post(API + "/recipes");
+      return validateSpecCompliance(
+          given()
+              .spec(reqSpec)
+              .contentType(APPLICATION_JSON)
+              .body(body)
+              .when()
+              .post(API + "/recipes")
+      );
     }
 
     /**
@@ -223,10 +326,33 @@ public class ApiActions {
      * @return response
      */
     public MockMvcResponse getRecipe(String slugOrId) {
-      return given()
-          .spec(reqSpec)
-          .when()
-          .get(API + "/recipes/" + slugOrId);
+      return validateSpecCompliance(
+          given()
+              .spec(reqSpec)
+              .when()
+              .get(API + "/recipes/" + slugOrId)
+      );
+    }
+
+    private MockMvcResponse validateSpecCompliance(MockMvcResponse response) {
+      MvcResult mvcResult = response.mvcResult();
+      OpenApiInteractionValidator validator = validateRequest
+          ? defaultOpenApiValidator
+          : ignoringRequestOpenApiValidator;
+
+      ValidationReport report = validator.validate(
+          MockMvcRequest.of(mvcResult.getRequest()),
+          com.atlassian.oai.validator.mockmvc.MockMvcResponse.of(mvcResult.getResponse())
+      );
+
+      if (report.hasErrors()) {
+        String errorMessage = report.getMessages().stream()
+            .map(ValidationReport.Message::getMessage)
+            .reduce("", (acc, message) -> acc + message + "\n");
+        throw new AssertionError(errorMessage);
+      }
+
+      return response;
     }
   }
 }
