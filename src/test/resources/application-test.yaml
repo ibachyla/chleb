@@ -1,3 +1,29 @@
+chleb:
+  deployment:
+    production: false
+    version: test
+    demo: false
+    signup-allowed: true
+    default-group-slug: home
+    oidc-enabled: false
+    oidc-redirect-enabled: false
+    oidc-provider-name: OAuth
+  theme:
+    light-primary: '#E58325'
+    light-accent: '#007A99'
+    light-secondary: '#973542'
+    light-success: '#43A047'
+    light-info: '#1976D2'
+    light-warning: '#FF6D00'
+    light-error: '#EF5350'
+    dark-primary: '#E58325'
+    dark-accent: '#007A99'
+    dark-secondary: '#973542'
+    dark-success: '#43A047'
+    dark-info: '#1976D2'
+    dark-warning: '#FF6D00'
+    dark-error: '#EF5350'
+
 spring:
   datasource:
     url: jdbc:tc:postgresql:16.2-alpine:///test

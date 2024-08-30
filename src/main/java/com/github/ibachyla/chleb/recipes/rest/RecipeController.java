@@ -1,5 +1,6 @@
 package com.github.ibachyla.chleb.recipes.rest;
 
+import static com.github.ibachyla.chleb.security.SecurityProperties.SECURITY_SCHEME_NAME;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
 
@@ -51,10 +52,15 @@ public class RecipeController {
    * @param body request body
    * @return slug of the created recipe
    */
-  @SecurityRequirement(name = "Bearer Auth")
+  @SecurityRequirement(name = SECURITY_SCHEME_NAME)
   @ApiResponse(responseCode = "201",
       description = "Successful Response",
       content = @Content(mediaType = TEXT_PLAIN_VALUE))
+  @ApiResponse(responseCode = "422",
+      description = "Validation Error",
+      content = @Content(mediaType = "application/json",
+          schema = @Schema(implementation = ErrorResponse.class))
+  )
   @Operation(summary = "Create One",
       description = "Takes in a JSON string and loads data into the database as a new entry")
   @PostMapping(produces = TEXT_PLAIN_VALUE, consumes = APPLICATION_JSON_VALUE)

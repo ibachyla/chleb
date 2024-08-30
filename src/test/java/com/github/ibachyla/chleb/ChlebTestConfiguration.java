@@ -2,10 +2,13 @@ package com.github.ibachyla.chleb;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import static io.restassured.config.ObjectMapperConfig.objectMapperConfig;
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
+import com.atlassian.oai.validator.OpenApiInteractionValidator;
+import com.atlassian.oai.validator.report.LevelResolver;
+import com.atlassian.oai.validator.report.ValidationReport;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.restassured.filter.log.LogDetail;
 import io.restassured.module.mockmvc.config.RestAssuredMockMvcConfig;
 import io.restassured.module.mockmvc.specification.MockMvcRequestSpecBuilder;
 import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
@@ -18,6 +21,53 @@ import org.springframework.test.web.servlet.MockMvc;
  */
 @TestConfiguration
 public class ChlebTestConfiguration {
+
+  /**
+   * Retrieves the OpenAPI specification.
+   *
+   * @param reqSpec RestAssured request specification
+   * @return OpenAPI specification
+   */
+  @Bean
+  public String apiSpec(MockMvcRequestSpecification reqSpec) {
+    return given()
+        .spec(reqSpec)
+        .when()
+        .get("/api-docs.yaml")
+        .then()
+        .statusCode(200)
+        .extract()
+        .asString();
+  }
+
+  /**
+   * Creates an OpenAPI validator.
+   *
+   * @param apiSpec OpenAPI specification
+   * @return OpenAPI validator
+   */
+  @Bean
+  public OpenApiInteractionValidator defaultOpenApiValidator(String apiSpec) {
+    return OpenApiInteractionValidator
+        .createForInlineApiSpecification(apiSpec)
+        .build();
+  }
+
+  /**
+   * Creates an OpenAPI validator that ignores request validation.
+   *
+   * @param apiSpec OpenAPI specification
+   * @return OpenAPI validator
+   */
+  @Bean
+  public OpenApiInteractionValidator ignoringRequestOpenApiValidator(String apiSpec) {
+    return OpenApiInteractionValidator
+        .createForInlineApiSpecification(apiSpec)
+        .withLevelResolver(LevelResolver.create()
+            .withLevel("validation.request", ValidationReport.Level.IGNORE)
+            .build())
+        .build();
+  }
 
   /**
    * Creates a request specification for RestAssured.
@@ -38,7 +88,6 @@ public class ChlebTestConfiguration {
         .setConfig(config)
         .setContentType(APPLICATION_JSON.toString())
         .setMockMvc(mockMvc)
-        .log(LogDetail.ALL)
         .build();
   }
 
@@ -49,8 +98,14 @@ public class ChlebTestConfiguration {
    * @return API actions
    */
   @Bean
-  public ApiActions apiActions(MockMvcRequestSpecification reqSpec, TokenProvider tokenProvider) {
-    return new ApiActions(reqSpec, tokenProvider);
+  public ApiActions apiActions(MockMvcRequestSpecification reqSpec,
+                               TokenProvider tokenProvider,
+                               OpenApiInteractionValidator defaultOpenApiValidator,
+                               OpenApiInteractionValidator ignoringRequestOpenApiValidator) {
+    return new ApiActions(reqSpec,
+        tokenProvider,
+        defaultOpenApiValidator,
+        ignoringRequestOpenApiValidator);
   }
 
   @Bean

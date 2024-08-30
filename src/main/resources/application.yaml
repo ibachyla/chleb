@@ -3,6 +3,31 @@ chleb:
     issuer: http://localhost:8080
     token-expiration-time: 5
     token-expiration-unit: minutes
+    allowed-origins: http://localhost:3000
+  theme:
+    light-primary: '#E58325'
+    light-accent: '#007A99'
+    light-secondary: '#973542'
+    light-success: '#43A047'
+    light-info: '#1976D2'
+    light-warning: '#FF6D00'
+    light-error: '#EF5350'
+    dark-primary: '#E58325'
+    dark-accent: '#007A99'
+    dark-secondary: '#973542'
+    dark-success: '#43A047'
+    dark-info: '#1976D2'
+    dark-warning: '#FF6D00'
+    dark-error: '#EF5350'
+  deployment:
+    production: true
+    version: ${CHLEB_VERSION}
+    demo: false
+    signup-allowed: true
+    default-group-slug: home
+    oidc-enabled: false
+    oidc-redirect-enabled: false
+    oidc-provider-name: OAuth
 
 spring:
   datasource:
@@ -14,6 +39,9 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.yaml
   jpa:
     open-in-view: false
+  threads:
+    virtual:
+      enabled: true
 
 springdoc:
   api-docs:
