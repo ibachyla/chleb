@@ -55,7 +55,7 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
     testImplementation("io.rest-assured:spring-mock-mvc")
-    testImplementation("net.datafaker:datafaker:2.3.1")
+    testImplementation("net.datafaker:datafaker:2.4.1")
     testImplementation("com.atlassian.oai:swagger-request-validator-mockmvc:2.41.0")
 
     errorprone("com.google.errorprone:error_prone_core:2.31.0")
