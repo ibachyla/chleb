@@ -63,7 +63,18 @@ public class TestValues {
     return new HashedPassword(faker.internet().password());
   }
 
+  /**
+   * Generates a random user.
+   *
+   * @return random user
+   */
   public static User user() {
-    return new User(randomUUID(), email(), username(), fullName(), hashedPassword(), Role.USER);
+    return new User(randomUUID(),
+        email(),
+        username(),
+        fullName(),
+        hashedPassword(),
+        Role.USER,
+        randomUUID());
   }
 }

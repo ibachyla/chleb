@@ -1,14 +1,24 @@
 package com.github.ibachyla.chleb.app.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 import com.github.ibachyla.chleb.app.DeploymentProperties;
+import com.github.ibachyla.chleb.users.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-final class AboutServiceTest {
+@ExtendWith(MockitoExtension.class)
+final class AboutServiceImplTest {
 
   DeploymentProperties deploymentProperties;
+
+  @Mock
+  UserService userServiceMock;
+
   AboutService aboutService;
 
   @BeforeEach
@@ -21,7 +31,7 @@ final class AboutServiceTest {
         false,
         false,
         "OAuth");
-    aboutService = new AboutService(deploymentProperties);
+    aboutService = new AboutServiceImpl(deploymentProperties, userServiceMock);
   }
 
   @Test
@@ -70,5 +80,23 @@ final class AboutServiceTest {
   void getOidcProviderName() {
     // Act & Assert
     assertThat(aboutService.getOidcProviderName()).isEqualTo("OAuth");
+  }
+
+  @Test
+  void isFirstLogin_true() {
+    // Arrange
+    when(userServiceMock.isDefaultUserPresent()).thenReturn(true);
+
+    // Act & Assert
+    assertThat(aboutService.isFirstLogin()).isTrue();
+  }
+
+  @Test
+  void isFirstLogin_false() {
+    // Arrange
+    when(userServiceMock.isDefaultUserPresent()).thenReturn(false);
+
+    // Act & Assert
+    assertThat(aboutService.isFirstLogin()).isFalse();
   }
 }

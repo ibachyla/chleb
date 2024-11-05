@@ -2,13 +2,14 @@ package com.github.ibachyla.chleb;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.apache.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA;
 
 import com.atlassian.oai.validator.OpenApiInteractionValidator;
 import com.atlassian.oai.validator.mockmvc.MockMvcRequest;
 import com.atlassian.oai.validator.report.ValidationReport;
 import com.github.ibachyla.chleb.app.rest.dto.GetAboutResponse;
+import com.github.ibachyla.chleb.app.rest.dto.GetStartupInfoResponse;
 import com.github.ibachyla.chleb.app.rest.dto.GetThemeResponse;
 import com.github.ibachyla.chleb.recipes.rest.dto.CreateRecipeRequest;
 import com.github.ibachyla.chleb.recipes.rest.dto.GetRecipeResponse;
@@ -115,6 +116,20 @@ public class ApiActions {
         .contentType(APPLICATION_JSON.getType())
         .extract()
         .as(GetAboutResponse.class);
+  }
+
+  /**
+   * Get startup information.
+   *
+   * @return response with startup information
+   */
+  public GetStartupInfoResponse getStartupInfo() {
+    return raw().getStartupInfo()
+        .then()
+        .statusCode(HttpStatus.SC_OK)
+        .contentType(APPLICATION_JSON.getType())
+        .extract()
+        .as(GetStartupInfoResponse.class);
   }
 
   /**
@@ -237,6 +252,20 @@ public class ApiActions {
     }
 
     /**
+     * Get startup information.
+     *
+     * @return response
+     */
+    public MockMvcResponse getStartupInfo() {
+      return validateSpecCompliance(
+          given()
+              .spec(reqSpec)
+              .when()
+              .get(API + "/app/about/startup-info")
+      );
+    }
+
+    /**
      * Get the current theme settings.
      *
      * @return response
@@ -278,7 +307,7 @@ public class ApiActions {
       return validateSpecCompliance(
           given()
               .spec(reqSpec)
-              .contentType(APPLICATION_FORM_URLENCODED)
+              .contentType(MULTIPART_FORM_DATA)
               .formParam("username", username)
               .formParam("password", new String(password))
               .when()

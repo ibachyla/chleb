@@ -23,6 +23,9 @@ chleb:
     dark-info: '#1976D2'
     dark-warning: '#FF6D00'
     dark-error: '#EF5350'
+  users:
+    default-email: changeme@example.com
+    default-password: MyPassword1!
 
 spring:
   datasource:

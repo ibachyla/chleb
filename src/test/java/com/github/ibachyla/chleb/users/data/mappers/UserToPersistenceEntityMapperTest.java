@@ -1,15 +1,10 @@
 package com.github.ibachyla.chleb.users.data.mappers;
 
-import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.github.ibachyla.chleb.users.TestValues;
 import com.github.ibachyla.chleb.users.data.entities.UserEntity;
 import com.github.ibachyla.chleb.users.models.entities.User;
-import com.github.ibachyla.chleb.users.models.values.Email;
-import com.github.ibachyla.chleb.users.models.values.HashedPassword;
-import com.github.ibachyla.chleb.users.models.values.Role;
-import com.github.ibachyla.chleb.users.models.values.Username;
-import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 final class UserToPersistenceEntityMapperTest {
@@ -19,13 +14,7 @@ final class UserToPersistenceEntityMapperTest {
   @Test
   void doMap() {
     // Arrange
-    UUID id = randomUUID();
-    User user = new User(id,
-        new Email("test@example.com"),
-        new Username("testuser"),
-        "Test User",
-        new HashedPassword("ValidPassword1!"),
-        Role.USER);
+    User user = TestValues.user();
 
     // Act
     UserEntity userEntity = mapper.doMap(user);

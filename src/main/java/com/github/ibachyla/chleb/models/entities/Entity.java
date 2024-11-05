@@ -1,7 +1,6 @@
 package com.github.ibachyla.chleb.models.entities;
 
 import static java.util.UUID.randomUUID;
-import static org.apache.commons.lang3.Validate.notNull;
 
 import java.util.UUID;
 import lombok.EqualsAndHashCode;
@@ -17,7 +16,7 @@ public class Entity {
   private UUID id;
 
   public Entity() {
-    this(randomUUID());
+    this(null);
   }
 
   public Entity(UUID id) {
@@ -25,8 +24,6 @@ public class Entity {
   }
 
   private void id(UUID id) {
-    notNull(id, "id cannot be null");
-
-    this.id = id;
+    this.id = id != null ? id : randomUUID();
   }
 }

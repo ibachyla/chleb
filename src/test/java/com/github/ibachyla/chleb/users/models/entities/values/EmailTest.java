@@ -28,7 +28,7 @@ final class EmailTest {
     // Act & Assert
     assertThatThrownBy(() -> new Email(null))
         .isInstanceOf(NullPointerException.class)
-        .hasMessage("value cannot be null");
+        .hasMessage("value cannot be blank");
   }
 
   @ParameterizedTest

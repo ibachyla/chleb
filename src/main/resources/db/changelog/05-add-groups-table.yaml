@@ -1,0 +1,58 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1728030770555-1
+      author: ibachyla
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_groups
+                  name: id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: version
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(32)
+            tableName: groups
+  - changeSet:
+      id: 1728030770555-2
+      author: ibachyla
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: group_id
+                  type: UUID
+            tableName: users
+  - changeSet:
+      id: 1728030770555-3
+      author: ibachyla
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: name
+            constraintName: uc_groups_name
+            tableName: groups
+  - changeSet:
+      id: 1728030770555-4
+      author: ibachyla
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: group_id
+            baseTableName: users
+            constraintName: FK_USERS_ON_GROUP
+            referencedColumnNames: id
+            referencedTableName: groups
+

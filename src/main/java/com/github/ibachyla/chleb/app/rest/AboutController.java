@@ -3,8 +3,9 @@ package com.github.ibachyla.chleb.app.rest;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.github.ibachyla.chleb.app.rest.dto.GetAboutResponse;
+import com.github.ibachyla.chleb.app.rest.dto.GetStartupInfoResponse;
 import com.github.ibachyla.chleb.app.rest.dto.GetThemeResponse;
-import com.github.ibachyla.chleb.app.services.DeploymentAware;
+import com.github.ibachyla.chleb.app.services.AboutService;
 import com.github.ibachyla.chleb.app.services.ThemeColorsProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AboutController {
 
-  private final DeploymentAware deploymentAware;
+  private final AboutService aboutService;
   private final ThemeColorsProvider themeColorsProvider;
 
   /**
@@ -41,17 +42,38 @@ public class AboutController {
     log.info("App info requested");
 
     GetAboutResponse response = new GetAboutResponse(
-        deploymentAware.isProduction(),
-        deploymentAware.getVersion(),
-        deploymentAware.isDemo(),
-        deploymentAware.isSignupAllowed(),
-        deploymentAware.getDefaultGroupSlug(),
-        deploymentAware.isOidcEnabled(),
-        deploymentAware.isOidcRedirectEnabled(),
-        deploymentAware.getOidcProviderName()
+        aboutService.isProduction(),
+        aboutService.getVersion(),
+        aboutService.isDemo(),
+        aboutService.isSignupAllowed(),
+        aboutService.getDefaultGroupSlug(),
+        aboutService.isOidcEnabled(),
+        aboutService.isOidcRedirectEnabled(),
+        aboutService.getOidcProviderName()
     );
 
     log.info("Sending app info: {}", response);
+
+    return response;
+  }
+
+  /**
+   * Get startup info.
+   *
+   * @return startup info
+   */
+  @ApiResponse(responseCode = "200", description = "Successful Response")
+  @GetMapping(path = "/startup-info", produces = APPLICATION_JSON_VALUE)
+  @Operation(summary = "Get Startup Info", description = "Returns helpful startup information")
+  public GetStartupInfoResponse getStartupInfo() {
+    log.info("Startup info requested");
+
+    GetStartupInfoResponse response = GetStartupInfoResponse.builder()
+        .isFirstLogin(aboutService.isFirstLogin())
+        .isDemo(aboutService.isDemo())
+        .build();
+
+    log.info("Sending startup info: {}", response);
 
     return response;
   }

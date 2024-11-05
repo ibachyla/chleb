@@ -28,6 +28,9 @@ chleb:
     oidc-enabled: false
     oidc-redirect-enabled: false
     oidc-provider-name: OAuth
+  users:
+    default-email: ${CHLEB_DEFAULT_EMAIL:}
+    default-password: ${CHLEB_DEFAULT_PASSWORD:}
 
 spring:
   datasource:

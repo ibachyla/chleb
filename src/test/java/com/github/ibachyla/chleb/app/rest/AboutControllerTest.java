@@ -46,6 +46,16 @@ final class AboutControllerTest {
   }
 
   @Test
+  void getStartupInfo() {
+    // Act
+    var response = apiActions.getStartupInfo();
+
+    // Assert
+    softly.assertThat(response.isFirstLogin()).isTrue();
+    softly.assertThat(response.isDemo()).isFalse();
+  }
+
+  @Test
   void getTheme() {
     // Act
     var response = apiActions.getTheme();
