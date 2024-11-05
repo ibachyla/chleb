@@ -1,55 +1,25 @@
 package com.github.ibachyla.chleb.app.services;
 
-import com.github.ibachyla.chleb.app.DeploymentProperties;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-
 /**
- * About service.
+ * Classes implementing this interface possess knowledge about the deployment configuration.
  */
-@Component
-@RequiredArgsConstructor
-public class AboutService implements DeploymentAware {
+public interface AboutService {
 
-  private final DeploymentProperties deploymentProperties;
+  boolean isProduction();
 
-  @Override
-  public boolean isProduction() {
-    return deploymentProperties.production();
-  }
+  String getVersion();
 
-  @Override
-  public String getVersion() {
-    return deploymentProperties.version();
-  }
+  boolean isDemo();
 
-  @Override
-  public boolean isDemo() {
-    return deploymentProperties.demo();
-  }
+  boolean isSignupAllowed();
 
-  @Override
-  public boolean isSignupAllowed() {
-    return deploymentProperties.signupAllowed();
-  }
+  String getDefaultGroupSlug();
 
-  @Override
-  public String getDefaultGroupSlug() {
-    return deploymentProperties.defaultGroupSlug();
-  }
+  boolean isOidcEnabled();
 
-  @Override
-  public boolean isOidcEnabled() {
-    return deploymentProperties.oidcEnabled();
-  }
+  boolean isOidcRedirectEnabled();
 
-  @Override
-  public boolean isOidcRedirectEnabled() {
-    return deploymentProperties.oidcRedirectEnabled();
-  }
+  String getOidcProviderName();
 
-  @Override
-  public String getOidcProviderName() {
-    return deploymentProperties.oidcProviderName();
-  }
+  boolean isFirstLogin();
 }

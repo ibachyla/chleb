@@ -1,5 +1,7 @@
 package com.github.ibachyla.chleb.users.data.mappers;
 
+import static com.github.ibachyla.chleb.utils.PersistenceUtils.getId;
+
 import com.github.ibachyla.chleb.mappers.AbstractMapper;
 import com.github.ibachyla.chleb.users.data.entities.UserEntity;
 import com.github.ibachyla.chleb.users.models.entities.User;
@@ -22,7 +24,8 @@ public class UserFromPersistenceEntityMapper extends AbstractMapper<UserEntity, 
         new Username(source.username()),
         source.fullName(),
         new HashedPassword(source.password()),
-        source.role()
+        source.role(),
+        getId(source.group())
     );
   }
 }

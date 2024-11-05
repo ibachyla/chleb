@@ -2,7 +2,7 @@ package com.github.ibachyla.chleb;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -65,7 +65,7 @@ public class TokenProvider {
 
     String token = given()
         .spec(reqSpec)
-        .contentType(APPLICATION_FORM_URLENCODED)
+        .contentType(MULTIPART_FORM_DATA)
         .formParam("username", user.username())
         .formParam("password", user.password())
         .when()

@@ -1,12 +1,15 @@
 package com.github.ibachyla.chleb.users.data.entities;
 
 import com.github.ibachyla.chleb.data.entities.IdentifiedEntity;
+import com.github.ibachyla.chleb.groups.data.entities.GroupEntity;
 import com.github.ibachyla.chleb.users.models.values.Role;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,4 +39,7 @@ public class UserEntity extends IdentifiedEntity {
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 10)
   private Role role;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  private GroupEntity group;
 }

@@ -2,8 +2,8 @@ package com.github.ibachyla.chleb.users.rest;
 
 import static com.github.ibachyla.chleb.security.SecurityProperties.SECURITY_SCHEME_NAME;
 import static com.github.ibachyla.chleb.utils.ArrayUtils.fillWithZeroes;
-import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 import com.github.ibachyla.chleb.rest.dto.ErrorResponse;
 import com.github.ibachyla.chleb.security.services.JwtTokenSupplier;
@@ -52,11 +52,11 @@ public class AuthController {
    */
   @ApiResponse(responseCode = "200", description = "Successful Response")
   @Operation(summary = "Get Token",
-      requestBody = @RequestBody(content = @Content(mediaType = APPLICATION_FORM_URLENCODED_VALUE))
+      requestBody = @RequestBody(content = @Content(mediaType = MULTIPART_FORM_DATA_VALUE))
   )
   @PostMapping(path = "/token",
       produces = APPLICATION_JSON_VALUE,
-      consumes = APPLICATION_FORM_URLENCODED_VALUE)
+      consumes = MULTIPART_FORM_DATA_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public GetTokenResponse getToken(
       @RequestParam("username") String username,

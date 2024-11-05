@@ -8,7 +8,9 @@ import com.github.ibachyla.chleb.users.models.values.Email;
 import com.github.ibachyla.chleb.users.models.values.HashedPassword;
 import com.github.ibachyla.chleb.users.models.values.Role;
 import com.github.ibachyla.chleb.users.models.values.Username;
+import java.util.StringJoiner;
 import java.util.UUID;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -24,6 +26,7 @@ public class User extends Entity {
   private String fullName;
   private HashedPassword password;
   private Role role;
+  private UUID groupId;
 
   /**
    * Constructor.
@@ -33,7 +36,10 @@ public class User extends Entity {
    * @param fullName full name
    * @param password password
    */
-  public User(Email email, Username username, String fullName, HashedPassword password) {
+  public User(Email email,
+              Username username,
+              String fullName,
+              HashedPassword password) {
     email(email);
     username(username);
     fullName(fullName);
@@ -49,19 +55,24 @@ public class User extends Entity {
    * @param username username
    * @param fullName full name
    * @param password password
+   * @param role role
+   * @param groupId group
    */
+  @Builder
   public User(UUID id,
               Email email,
               Username username,
               String fullName,
               HashedPassword password,
-              Role role) {
+              Role role,
+              UUID groupId) {
     super(id);
     email(email);
     username(username);
     fullName(fullName);
     password(password);
     role(role);
+    groupId(groupId);
   }
 
   /**
@@ -92,7 +103,6 @@ public class User extends Entity {
    * @param fullName full name
    */
   public void fullName(String fullName) {
-    notNull(fullName, "fullName cannot be null");
     notBlank(fullName, "fullName cannot be blank");
 
     this.fullName = fullName;
@@ -118,5 +128,25 @@ public class User extends Entity {
     notNull(role, "role cannot be null");
 
     this.role = role;
+  }
+
+  /**
+   * Sets the group.
+   *
+   * @param groupId group
+   */
+  public void groupId(UUID groupId) {
+    this.groupId = groupId;
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", User.class.getSimpleName() + "[", "]")
+        .add("role=" + role)
+        .add("groupId=" + groupId)
+        .add("fullName='" + fullName + "'")
+        .add("username=" + username)
+        .add("email=" + email)
+        .toString();
   }
 }

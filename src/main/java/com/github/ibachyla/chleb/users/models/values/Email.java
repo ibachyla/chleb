@@ -2,7 +2,6 @@ package com.github.ibachyla.chleb.users.models.values;
 
 import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notBlank;
-import static org.apache.commons.lang3.Validate.notNull;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
@@ -20,7 +19,6 @@ public record Email(String value) {
   }
 
   private static String validate(String value) {
-    notNull(value, "value cannot be null");
     notBlank(value, "value cannot be blank");
 
     value = value.trim();

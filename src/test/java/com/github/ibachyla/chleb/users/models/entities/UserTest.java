@@ -18,11 +18,12 @@ final class UserTest {
   public static final Username USERNAME = new Username("testuser");
   public static final String FULL_NAME = "Test User";
   public static final HashedPassword PASSWORD = new HashedPassword("ValidPassword1!");
+  public static final UUID GROUP_ID = randomUUID();
 
   @Test
   void constructor_positive_validUser() {
     // Act
-    User user = new User(ID, EMAIL, USERNAME, FULL_NAME, PASSWORD, Role.USER);
+    User user = new User(ID, EMAIL, USERNAME, FULL_NAME, PASSWORD, Role.USER, GROUP_ID);
 
     // Assert
     assertThat(user.id()).isEqualTo(ID);
@@ -30,6 +31,8 @@ final class UserTest {
     assertThat(user.username()).isEqualTo(USERNAME);
     assertThat(user.fullName()).isEqualTo(FULL_NAME);
     assertThat(user.password()).isEqualTo(PASSWORD);
+    assertThat(user.role()).isEqualTo(Role.USER);
+    assertThat(user.groupId()).isEqualTo(GROUP_ID);
   }
 
   @Test
@@ -53,7 +56,7 @@ final class UserTest {
     // Act & Assert
     assertThatThrownBy(() -> new User(EMAIL, USERNAME, null, PASSWORD))
         .isInstanceOf(NullPointerException.class)
-        .hasMessage("fullName cannot be null");
+        .hasMessage("fullName cannot be blank");
   }
 
   @Test
@@ -141,7 +144,7 @@ final class UserTest {
     // Act & Assert
     assertThatThrownBy(() -> user.fullName(null))
         .isInstanceOf(NullPointerException.class)
-        .hasMessage("fullName cannot be null");
+        .hasMessage("fullName cannot be blank");
   }
 
   @Test

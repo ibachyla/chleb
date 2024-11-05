@@ -1,6 +1,7 @@
 package com.github.ibachyla.chleb.recipes.models.entities;
 
 import static java.util.UUID.randomUUID;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -27,14 +28,14 @@ final class RecipeTest {
 
   @Test
   @SuppressWarnings("TimeZoneUsage")
-  void constructor_negative_nullId() {
+  void constructor_positive_nullId() {
     // Act & Assert
-    Exception ex = assertThrows(NullPointerException.class, () -> new Recipe(null,
+    Recipe recipe = new Recipe(null,
         new RecipeName(RECIPE_NAME),
         Slug.from(RECIPE_NAME),
         Instant.now(),
-        Instant.now()));
-    assertEquals("id cannot be null", ex.getMessage());
+        Instant.now());
+    assertThat(recipe.id()).isNotNull();
   }
 
   @Test
